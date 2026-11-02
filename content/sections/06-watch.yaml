@@ -1,0 +1,179 @@
+id: 06-watch
+part: b
+title: "Watch: real-time monitoring, alerts and decision support"
+core_question: "Can it warn us in time to act?"
+duration_minutes: 25
+
+objectives:
+  - Explain what changes when text is processed as it is written rather than months later.
+  - Describe how detecting 'clinical intent' in notes can prevent patients being lost to follow-up.
+  - Explain why clinician response to an alert matters more than model accuracy once a tool is deployed.
+  - Recognise when a real-time tool enters medical device and clinical safety territory.
+
+content:
+  - type: paragraph
+    text: |
+      Sections 4 and 5 looked backwards at documents already written. This section is about reading them as they
+      arrive, so that the hospital can act while there is still time. It is where the technology is most exciting and
+      where the responsibilities are heaviest.
+
+  - type: heading
+    text: "What changes in real time"
+
+  - type: paragraph
+    text: |
+      When documents are processed within minutes of being written, three new things become possible. The hospital
+      can see patterns across all its patients as they emerge. Individual patients can be flagged for action while
+      the action still matters. And guideline-based prompts can reach the clinician while the patient is still in
+      front of them. Each of these has been done in the NHS, and each is described below.
+
+  - type: case_study
+    title: "An early warning signal from clinicians' own notes"
+    text: |
+      During the COVID-19 pandemic, a London hospital group built a real-time signal from the free text clinicians
+      were writing: counts of key phrases describing viral pneumonia, aggregated as the notes were saved. Because it
+      drew on clinical documentation rather than social media or internet searches, it was not distorted by public
+      alarm or news cycles. It gave capacity planners up to four days' warning of rising demand, was cheap to run,
+      could be tuned locally, and did not depend on any particular record system.
+    details:
+      Capability: "Watch (population-level surveillance from real-time text)"
+      Lead time: "Up to four days' warning for capacity planning"
+      Design choice: "Deliberately independent of social media and search data"
+
+  - type: heading
+    text: "Patients lost to follow-up"
+
+  - type: paragraph
+    text: |
+      After a consultation, the clinician decides what happens next: a scan, a referral, a follow-up appointment, a
+      discharge. Each must be entered as an order. When the order is not placed, through interruption or
+      administrative error, the patient can simply disappear from the system. In most such cases the clinician's
+      **intention** was written in the note.
+
+  - type: case_study
+    title: "Detecting clinical intent"
+    text: |
+      A London hospital trained a model on its own outpatient notes to recognise sentences expressing an intention to
+      act: to order imaging, to refer, to book a follow-up, to discharge. The model achieved around 90% precision and
+      90% recall. It was then piloted as part of an alerting workflow: when an intention was detected and no matching
+      order appeared within a defined window, the patient appeared on a dashboard for the clinical team to check.
+    details:
+      Capability: "Watch (individual patient alerting)"
+      Performance: "Approximately 0.90 precision and 0.90 recall on local data"
+      Workflow: "Intent detected, no order placed, patient surfaced on a team dashboard"
+
+  - type: heading
+    text: "Decision support"
+
+  - type: paragraph
+    text: |
+      The third form of watching is the guideline prompt: the record notices that a patient meets criteria and tells
+      the clinician what the guideline recommends. Two examples from mental health settings show both the promise and
+      the lessons.
+
+  - type: case_study
+    title: "Blood sugar monitoring in severe mental illness"
+    text: |
+      People with severe mental illness die earlier than the general population, largely from physical conditions
+      such as diabetes that are under-monitored in psychiatric settings. A mental health trust built a real-time
+      decision support system on its text analytics platform that identifies inpatients with deranged blood sugar
+      results and prompts the treating team with the trust-approved, guideline-based recommendation for monitoring and
+      management. A pilot study was designed to evaluate acceptability, feasibility and implementation, not just
+      accuracy.
+    details:
+      Capability: "Watch (guideline-based decision support)"
+      Evaluation focus: "Acceptability and feasibility to clinicians, alongside accuracy"
+
+  - type: case_study
+    title: "A risk calculator, and whether anyone responded"
+    text: |
+      Earlier, the same trust embedded a validated psychosis risk calculator into its electronic record to screen
+      people in secondary mental health care automatically. The implementation study is notable for what it chose to
+      measure: not the model's accuracy, which had been established, but the proportion of clinicians who responded to
+      the alerts. Barriers were identified and addressed with clinicians and service users before go-live, and the
+      live phase tracked whether the prompts changed behaviour.
+    details:
+      Capability: "Watch (risk screening with clinician alerts)"
+      Primary outcome: "Clinician response to alerts, not model accuracy"
+      Lesson: "An accurate model that no one acts on has no clinical effect"
+
+  - type: callout
+    kind: limits
+    text: |
+      Alerts have value only if someone acts on them, and alert fatigue is real: a tool that interrupts clinicians
+      with too many false alarms is switched off, mentally or literally, within weeks. Real-time tools also inherit
+      every delay and gap in documentation. And anything that influences a decision about an individual patient
+      enters medical device and clinical safety territory: it needs a clinical safety case, a named clinical safety
+      officer, and may need regulatory registration. Section 10 covers this.
+
+  - type: callout
+    kind: key-message
+    text: |
+      Real-time text processing lets the hospital see demand emerging, catch patients about to be lost to follow-up,
+      and deliver guideline prompts while they still matter. The deployments that succeed measure whether clinicians
+      respond, not just whether the model is accurate, and treat anything that touches individual decisions as a
+      safety-critical system.
+
+quiz:
+  questions:
+    - question: "What becomes possible when documents are processed as they are written rather than months later? Select all that apply."
+      type: multiple
+      options:
+        - text: "Seeing population-level patterns as they emerge"
+          correct: true
+        - text: "Flagging individual patients while action still matters"
+          correct: true
+        - text: "Delivering guideline prompts during the episode of care"
+          correct: true
+        - text: "Removing the need for clinicians to document"
+      explanation: "Real time enables surveillance, individual alerting and timely decision support. It does not change the need for documentation."
+
+    - question: "Why was the viral pneumonia signal built from clinicians' notes rather than from social media or internet search data?"
+      type: single
+      options:
+        - text: "Clinical documentation is not distorted by public alarm, news cycles or keyword spamming."
+          correct: true
+        - text: "Social media data is illegal to use in the NHS."
+        - text: "Clinicians' notes are shorter and easier to count."
+        - text: "Internet search data was unavailable during the pandemic."
+      explanation: "The design choice was about signal quality: clinicians document what they see, not what the public fears."
+
+    - question: "How does detecting 'clinical intent' help prevent patients being lost to follow-up?"
+      type: single
+      options:
+        - text: "The model recognises when a note says an action is intended, and if no matching order appears within a set time the patient is surfaced for the team to check."
+          correct: true
+        - text: "The model places the order automatically without clinician involvement."
+        - text: "The model deletes notes that do not contain an order."
+        - text: "The model sends the patient a text message."
+      explanation: "The intention is written in the text; the order is missing from the system; the mismatch triggers a human check."
+
+    - question: "In the psychosis risk calculator implementation study, what was the primary outcome, and why does that matter?"
+      type: single
+      options:
+        - text: "The proportion of clinicians who responded to alerts, because an accurate model that no one acts on has no clinical effect."
+          correct: true
+        - text: "The model's F1 score, because accuracy is all that matters."
+        - text: "The number of servers required, because cost is the main barrier."
+        - text: "The number of patients diagnosed with psychosis."
+      explanation: "Deployment success depends on behaviour change. The study measured whether the prompts were acted on."
+
+    - question: "What is 'alert fatigue' and why does it matter for real-time tools?"
+      type: single
+      options:
+        - text: "Clinicians interrupted by too many false alarms stop responding, so a noisy tool loses its effect within weeks."
+          correct: true
+        - text: "The servers become slow if too many alerts are generated."
+        - text: "Patients become anxious when they receive alerts."
+        - text: "The model becomes less accurate over time."
+      explanation: "Precision matters more for alerts than for retrospective search, because every false alarm costs clinician trust."
+
+    - question: "A proposed tool would prompt a clinician to change a patient's medication based on text in the notes. What does this imply?"
+      type: single
+      options:
+        - text: "It influences an individual clinical decision, so it needs a clinical safety case, a named clinical safety officer, and possibly medical device registration."
+          correct: true
+        - text: "It is the same as a search tool and needs no additional governance."
+        - text: "It can be deployed as research without approval."
+        - text: "It must be built by the record vendor."
+      explanation: "Tools that touch individual decisions are safety-critical systems and are governed as such. Section 10 covers the detail."

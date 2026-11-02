@@ -1,0 +1,184 @@
+id: 10-validation-and-safety
+part: c
+title: "Validation, safety and knowing when a number is good enough"
+core_question: "How do I know whether to trust it?"
+duration_minutes: 25
+
+objectives:
+  - Ask the right questions about any validation claim, from a paper or a vendor.
+  - Explain model drift and why deployed tools need periodic re-validation.
+  - Describe where the boundary lies between software that is and is not a medical device.
+  - Explain how a research study and a live service are governed differently.
+
+content:
+  - type: paragraph
+    text: |
+      This section is about being the person in the room who asks the hard question, politely, and knows what a good
+      answer sounds like. It assumes the vocabulary of Section 3: precision, recall, F1 and gold standard.
+
+  - type: heading
+    text: "Reading a validation"
+
+  - type: paragraph
+    text: |
+      Whenever anyone presents a performance figure, six questions should follow. Each has a weak answer and a strong
+      one.
+
+  - type: table
+    headers: ["Question", "Weak answer", "Strong answer"]
+    rows:
+      - ["How big was the test set?", "'A sample of notes.'", "A stated number of documents and patients, large enough that the rarer categories have dozens of examples."]
+      - ["Who made the gold standard?", "'The developers checked it.'", "Named clinical annotators independent of the developers, with agreement between annotators measured and reported."]
+      - ["Was it from our hospital?", "'It was published in a good journal.'", "Yes, on our document types, our specialties and our record system; or a plan to do so before go-live."]
+      - ["Were the hard cases included?", "Overall accuracy only.", "Performance broken down by condition, document type and patient group, with the rare and the vulnerable shown separately."]
+      - ["What happens when it is wrong?", "'It is 95% accurate.'", "A description of the failure mode (miss or false alarm), its clinical consequence, and the safeguard that catches it."]
+      - ["How will we know if it degrades?", "'We will monitor it.'", "A named owner, a schedule of re-validation, and a threshold at which the tool is paused."]
+
+  - type: callout
+    kind: evidence
+    title: "Why these questions are necessary"
+    text: |
+      A systematic review of clinical NLP for electronic records and a separate study of reporting quality in the
+      field both found that published tools were frequently tested only where they were built, that data and methods
+      were often described too thinly to reproduce, and that performance on subgroups was rarely reported. This is not
+      a criticism of any single team; it is the state of a young field, and it is why a leader cannot rely on
+      publication as proof of local fitness.
+
+  - type: heading
+    text: "Drift"
+
+  - type: paragraph
+    text: |
+      A model validated in 2022 may not perform the same in 2025. Documentation habits change, templates are
+      introduced, a new record system arrives, a specialty adopts new terminology, a pandemic alters what gets written.
+      This is **drift**, and it is silent: the tool keeps producing confident output while its accuracy falls. The
+      defences are routine re-validation on a fresh gold standard, monitoring of output volumes for unexplained
+      changes, and a rule for pausing the tool.
+
+  - type: heading
+    text: "When software becomes a medical device"
+
+  - type: paragraph
+    text: |
+      In the UK, software is regulated as a medical device when its intended purpose includes diagnosis, prevention,
+      monitoring, prediction, prognosis or treatment of disease in individual patients. The boundary matters for text
+      analytics because the same platform can support uses on both sides of it.
+
+  - type: list
+    items:
+      - term: "Usually not a device:"
+        text: "indexing and search; coding support for audit; population dashboards for service planning; research cohort building; de-identification for a research environment."
+      - term: "Likely a device:"
+        text: "an alert that a specific patient is at risk; a tool that suggests a diagnosis or a treatment change; a forecast of an individual's outcome used in care; a generated clinical summary that enters the record."
+      - term: "Grey area:"
+        text: "worklists that prioritise patients for review; audit-and-feedback tools that name individual patients. Seek advice early."
+
+  - type: paragraph
+    text: |
+      A device requires registration with the regulator and conformity assessment proportionate to its risk class.
+      Independently of device status, **all** health IT deployed in the NHS that could affect patient safety falls
+      under the clinical safety standards for health IT. These require a clinical safety case, a hazard log, and a
+      named clinical safety officer who is a registered clinician trained in the standards. Manufacturers (which may be
+      the hospital's own informatics team) follow one standard; deploying organisations follow its counterpart.
+
+  - type: heading
+    text: "Research versus service"
+
+  - type: paragraph
+    text: |
+      Much of the evidence in this course comes from research studies. A research study operates under research ethics
+      approval, a protocol, a defined end date and, usually, no direct effect on care. A live service has none of these
+      protections and all of the consequences. The transition from one to the other is where governance most often goes
+      wrong: a model that was lawful to build for research is quietly used to prompt clinicians, with no safety case and
+      no owner.
+
+  - type: table
+    headers: ["", "Research study", "Live service"]
+    rows:
+      - ["Approval", "Research ethics committee; sponsor", "Clinical safety case; information governance; possibly device registration"]
+      - ["Effect on care", "Usually none", "Direct"]
+      - ["Accountability", "Chief investigator", "Named clinical safety officer; service owner"]
+      - ["Duration", "Fixed", "Open-ended, with re-validation"]
+      - ["Evidence of benefit", "Is the output", "Is a precondition"]
+
+  - type: callout
+    kind: key-message
+    text: |
+      Trust is earned by a local validation on a clinician-made gold standard with the hard cases shown separately, a
+      named failure mode with a safeguard, a plan for drift, and the right governance for what the tool actually does:
+      search and audit on one side of the medical device line, individual alerts and suggestions on the other, and
+      a clinical safety case for anything that could affect a patient.
+
+quiz:
+  questions:
+    - question: "A vendor says their model is '95% accurate'. Which follow-up question most directly tests whether that figure applies to your hospital?"
+      type: single
+      options:
+        - text: "Was it measured on our document types, specialties and record system, and if not, when will it be?"
+          correct: true
+        - text: "Which journal was it published in?"
+        - text: "How many other hospitals have bought it?"
+        - text: "What programming language is it written in?"
+      explanation: "Publication and sales are not evidence of local fitness. Local measurement is."
+
+    - question: "Why should performance be reported broken down by condition, document type and patient group rather than as a single overall figure?"
+      type: single
+      options:
+        - text: "Because overall accuracy can hide poor performance on the rare conditions and vulnerable groups where errors matter most."
+          correct: true
+        - text: "Because regulators require at least ten tables."
+        - text: "Because overall figures are harder to calculate."
+        - text: "It should not; a single figure is clearer."
+      explanation: "Averages hide the cases that carry the greatest clinical risk."
+
+    - question: "What is model drift?"
+      type: single
+      options:
+        - text: "A silent fall in a deployed model's accuracy as documentation habits, templates, systems and terminology change over time."
+          correct: true
+        - text: "The gradual movement of data between servers."
+        - text: "The tendency of clinicians to stop using a tool."
+        - text: "A sudden software crash."
+      explanation: "Drift is dangerous because the output stays confident while its accuracy falls."
+
+    - question: "Which of these uses is most likely to make the software a medical device under UK regulation?"
+      type: single
+      options:
+        - text: "An alert to a clinician that a specific patient is at risk of a condition."
+          correct: true
+        - text: "Searching the record to count patients for service planning."
+        - text: "De-identifying text for a research environment."
+        - text: "Supporting coders with suggested codes for audit."
+      explanation: "Individual diagnosis, prediction, monitoring or treatment is the regulatory boundary."
+
+    - question: "Which obligations apply to health IT deployed in the NHS that could affect patient safety, regardless of whether it is a medical device?"
+      type: single
+      options:
+        - text: "A clinical safety case, a hazard log and a named clinical safety officer under the clinical safety standards for health IT."
+          correct: true
+        - text: "None; only medical devices have safety obligations."
+        - text: "Approval by a research ethics committee."
+        - text: "A press release and a staff newsletter."
+      explanation: "The clinical safety standards for health IT apply to manufacturers and deploying organisations independently of device status."
+
+    - question: "A model built lawfully for a research study is quietly switched on to prompt clinicians in live care. What is wrong with this?"
+      type: single
+      options:
+        - text: "It has moved from research to service without a clinical safety case, an owner or the governance that a live effect on care requires."
+          correct: true
+        - text: "Nothing; research approval covers all later uses."
+        - text: "Only that the journal article should be updated."
+        - text: "Only that the research ethics committee should be informed afterwards."
+      explanation: "The research-to-service transition is where governance most often goes wrong."
+
+    - question: "Which of the following belong in a strong answer to 'how will we know if it degrades?' Select all that apply."
+      type: multiple
+      options:
+        - text: "A named owner"
+          correct: true
+        - text: "A schedule of re-validation on fresh gold-standard data"
+          correct: true
+        - text: "A threshold at which the tool is paused"
+          correct: true
+        - text: "A promise that the model is accurate enough never to degrade"
+      explanation: "Drift is managed by ownership, measurement and a stopping rule, never by assuming it will not happen."

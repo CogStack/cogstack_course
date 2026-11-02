@@ -1,0 +1,175 @@
+id: 11-people-money-governance
+part: c
+title: "People, money and governance: what it really takes to run this"
+core_question: "What does it really take to run?"
+duration_minutes: 25
+
+objectives:
+  - Name the roles a hospital needs to run text analytics safely and say what each does.
+  - Give realistic timelines for a first search index, a validated extraction model and a safe alerting tool.
+  - Describe where the costs sit and how hospitals have funded the work.
+  - Compare building in-house, working with the open-source community and academic partners, and buying a service, and list the questions to ask each.
+
+content:
+  - type: paragraph
+    text: |
+      The software is free. The capability is not. This section describes what the NHS deployments actually took in
+      people, infrastructure, time and money, so that a proposal can be judged against reality rather than against a
+      slide.
+
+  - type: heading
+    text: "The team"
+
+  - type: list
+    items:
+      - term: "Clinical informatics lead."
+        text: "A clinician who understands both the care and the data, owns the clinical questions, and is credible with colleagues. The single most important appointment; projects without one drift."
+      - term: "Data engineers."
+        text: "Connect the platform to the record and other systems, keep the data flowing, manage the servers. Typically one to three people depending on the number of source systems."
+      - term: "Data scientists or NLP specialists."
+        text: "Train, evaluate and maintain the models; build the validation sets with clinicians; investigate drift."
+      - term: "Clinical annotators."
+        text: "Clinicians, often trainees or specialist nurses with protected time, who create gold standards and correct model output. Their time is the hidden cost of every model. Budget for it."
+      - term: "Information governance lead."
+        text: "Owns the DPIA, the approvals for each use, the TRE access process and the audit trail."
+      - term: "Clinical safety officer."
+        text: "A registered clinician trained in the health IT safety standards, responsible for the safety case of any tool that could affect care."
+      - term: "Service owners."
+        text: "For each deployed tool, the person in the clinical team who owns the dashboard, reviews the alerts and reports the outcome."
+
+  - type: heading
+    text: "Infrastructure"
+
+  - type: paragraph
+    text: |
+      The platform runs on servers inside the hospital network or in a cloud tenancy under the hospital's control.
+      It needs storage for the document index (the full text of a large hospital's record is tens of millions of
+      documents), compute for the language models (modern transformers want graphics processors), network connections
+      to each source system, and a trusted research environment for analysts. Hospitals that already run an enterprise
+      record usually have the skills to operate this; what they often lack is the NLP expertise and the clinician time.
+
+  - type: heading
+    text: "Timelines seen in practice"
+
+  - type: table
+    headers: ["Milestone", "Typical time from start", "What gates it"]
+    rows:
+      - ["Governance approvals and DPIA for the platform", "2 to 6 months", "Information governance capacity; board understanding"]
+      - ["First document index and search for a pilot service", "3 to 6 months", "Access to source systems; data engineering"]
+      - ["Hospital-wide index with concept extraction", "6 to 12 months", "Volume of sources; server capacity"]
+      - ["A locally validated extraction model for one use case", "3 to 6 months after the index", "Clinician annotation time; gold standard size"]
+      - ["A real-time alerting tool in live use", "12 to 24 months", "Clinical safety case; workflow design; possibly device registration"]
+      - ["A sustained programme of multiple point solutions", "Years", "A stable team and a pipeline of clinical questions"]
+
+  - type: heading
+    text: "Where the money goes, and where it comes from"
+
+  - type: paragraph
+    text: |
+      Costs are staff first, infrastructure second, and licences last or not at all. A credible starting programme is
+      a small team of four to six people plus protected clinician time, with servers either repurposed or procured at
+      modest cost relative to an enterprise record. The NHS deployments have been funded through a mix of hospital
+      investment justified by cost-saving use cases (the first deployment reported savings from replacing manual data
+      requests and audit collection), research income (a well-governed text corpus with a trusted research environment
+      is attractive to funders and academic partners), and national digital programmes. The honest message is that the
+      payback is real but takes two to three years to appear, and comes mostly from staff time released and research
+      enabled rather than from a single headline saving.
+
+  - type: heading
+    text: "Build, partner or buy"
+
+  - type: table
+    headers: ["Route", "Strengths", "Risks", "Questions to ask"]
+    rows:
+      - ["Build in-house on open-source", "Full control; no lock-in; skills stay in the hospital; community of NHS users", "Key-person dependency; slower start; must own all governance", "Who leads clinically? What if two engineers leave? How do we validate? Who is the clinical safety officer?"]
+      - ["Partner with the open-source community and an academic centre", "Access to expertise and published methods; shared validation; research income", "Research timelines; priorities may differ from service needs; transition from research to service must be managed", "What is the plan for the tool after the study ends? Who owns the service? What data leaves, if any?"]
+      - ["Buy a commercial service", "Faster start; support; someone to hold to account", "Lock-in; opaque models; cost at scale; your data on their terms", "Where does our data go? Can we see the validation on our data? What is the exit route? Who holds the safety case?"]
+
+  - type: callout
+    kind: limits
+    text: |
+      No route removes the need for a clinical informatics lead, local validation, information governance and a
+      clinical safety officer. A vendor can supply software and support; it cannot supply your hospital's
+      accountability. Proposals that promise otherwise should be treated with caution.
+
+  - type: callout
+    kind: key-message
+    text: |
+      Running clinical text analytics takes a small, stable team led by a credible clinician, protected clinician time
+      for annotation, in-house infrastructure or a controlled cloud tenancy, and a governance and safety function.
+      Expect months to first value, years to a mature programme, and payback that comes from released time and
+      enabled research rather than a single saving.
+
+quiz:
+  questions:
+    - question: "Which role does the section identify as the single most important appointment?"
+      type: single
+      options:
+        - text: "A clinical informatics lead who understands both care and data and owns the clinical questions."
+          correct: true
+        - text: "A procurement manager."
+        - text: "A communications officer."
+        - text: "The record system vendor's account manager."
+      explanation: "Projects without a credible clinical lead drift."
+
+    - question: "Why is clinician annotation time described as the hidden cost of every model?"
+      type: single
+      options:
+        - text: "Gold standards and model corrections require clinicians with protected time, and this is rarely budgeted for."
+          correct: true
+        - text: "Because annotators must be paid at consultant rates."
+        - text: "Because annotation software is expensive."
+        - text: "It is not a real cost; annotation is done automatically."
+      explanation: "Section 3 explained that models learn from clinician corrections. Someone has to make them."
+
+    - question: "Roughly how long does the section suggest it takes to reach a real-time alerting tool in live use?"
+      type: single
+      options:
+        - text: "12 to 24 months, gated by the clinical safety case, workflow design and possibly device registration."
+          correct: true
+        - text: "Two weeks."
+        - text: "Ten years."
+        - text: "It cannot be done in the NHS."
+      explanation: "Search comes in months; safe alerting takes one to two years because of the safety and workflow work."
+
+    - question: "Where do the costs of a text analytics programme mostly sit?"
+      type: single
+      options:
+        - text: "Staff first, infrastructure second, licences last or not at all."
+          correct: true
+        - text: "Licences first, then marketing."
+        - text: "Entirely in server hardware."
+        - text: "There are no significant costs."
+      explanation: "Open source removes licence fees. People remain the main cost."
+
+    - question: "How have NHS deployments typically funded the work? Select all that apply."
+      type: multiple
+      options:
+        - text: "Hospital investment justified by cost-saving use cases such as replacing manual data requests"
+          correct: true
+        - text: "Research income attracted by a well-governed text corpus and trusted research environment"
+          correct: true
+        - text: "National digital programmes"
+          correct: true
+        - text: "Charging patients for access to their notes"
+      explanation: "Funding has been a mix of hospital investment, research income and national programmes."
+
+    - question: "Which of these risks is specific to buying a commercial service rather than building or partnering?"
+      type: single
+      options:
+        - text: "Lock-in, opaque models and your data on the supplier's terms."
+          correct: true
+        - text: "Key-person dependency on in-house engineers."
+        - text: "Research timelines that differ from service needs."
+        - text: "Having to appoint a clinical safety officer."
+      explanation: "A clinical safety officer is needed on every route. Lock-in and opacity are the commercial route's particular risks."
+
+    - question: "A vendor's proposal states that their service 'removes the need for the hospital to validate the model or appoint a clinical safety officer'. How should this be treated?"
+      type: single
+      options:
+        - text: "With caution: no route removes the hospital's accountability for local validation, governance and clinical safety."
+          correct: true
+        - text: "As a major advantage that justifies the cost."
+        - text: "As normal practice for commercial software."
+        - text: "As true, provided the vendor is ISO certified."
+      explanation: "A vendor can supply software and support, not the hospital's accountability."

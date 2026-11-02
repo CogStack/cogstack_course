@@ -1,0 +1,162 @@
+id: 01-where-information-lives
+part: a
+title: "Where the information in your hospital actually lives"
+core_question: "Why does free text matter?"
+duration_minutes: 20
+
+objectives:
+  - Explain the difference between structured (coded) data and free text in a patient record.
+  - Give three examples of clinically important information that is usually found only in the text.
+  - Describe the cost, in time, money and safety, of extracting information from notes by hand.
+
+content:
+  - type: paragraph
+    text: |
+      Every hospital believes it is data rich. Dashboards report admissions, bed days, coded diagnoses, drug
+      prescriptions and observation scores. These are **structured data**: each item sits in a defined field with a
+      defined meaning, and a computer can count it. Structured data is what feeds national returns, payment systems,
+      audits and most of the reports that reach a board.
+
+      But ask a clinician what they actually know about a patient and very little of it comes from those fields.
+      The reasoning behind a diagnosis, the symptoms that were considered and dismissed, the family history, the
+      social situation, the plan for follow-up, the uncertainty, the conversation with the family: all of this is
+      written as prose. It is **free text**, and in most hospitals it makes up the large majority of the record by
+      volume and by clinical meaning.
+
+  - type: heading
+    text: "What lives only in the text"
+
+  - type: list
+    items:
+      - term: "Symptoms and findings."
+        text: "Coded data records a diagnosis of heart failure. The text records breathlessness on climbing one flight of stairs, swollen ankles for three weeks and a new cough at night."
+      - term: "Negatives and uncertainty."
+        text: "A note that says 'no chest pain' or 'possible early dementia, to review in six months' carries information that no diagnosis code can hold."
+      - term: "Family and social history."
+        text: "'Mother had breast cancer at 45' or 'lives alone, no stairs, daughter visits weekly' changes what the right care is, and almost never appears as a code."
+      - term: "Intentions and plans."
+        text: "'Will arrange MRI and see in clinic in eight weeks' is a commitment to a patient. Whether it was ever carried out is a safety question that only the text can answer."
+      - term: "Reasoning."
+        text: "Why one treatment was chosen over another, what the consultant was worried about, what the patient preferred."
+      - term: "Everything in a letter."
+        text: "Outpatient letters, discharge summaries and referral letters are the main vehicles of communication between teams and are, with few exceptions, entirely unstructured."
+
+  - type: callout
+    kind: evidence
+    title: "How much of the record is text?"
+    text: |
+      When one large London teaching hospital indexed its entire electronic record, the result was 9.5 million
+      documents for just over one million patients across nine years. Studies across UK and US hospitals have
+      repeatedly estimated that the majority of clinically meaningful information exists only in narrative form, and
+      that structured coding captures a fraction of the conditions, symptoms and risk factors recorded in the notes.
+      When machine extraction from stroke admission notes was compared against the comorbidities entered manually for
+      a national audit at three NHS hospitals, the manual process had missed a substantial share of what the clinicians
+      had written down.
+
+  - type: heading
+    text: "The cost of extracting it by hand"
+
+  - type: paragraph
+    text: |
+      Because the text cannot be counted, hospitals employ people to read it. Clinical coders translate discharge
+      summaries into diagnosis and procedure codes weeks after discharge. Audit teams pull notes to check whether a
+      standard was met. Research nurses read hundreds of records to find patients eligible for a trial. Junior
+      doctors assemble handover sheets by reading yesterday's entries.
+
+      This work is slow, expensive, inconsistent between people, and never complete. A national audit's data
+      collection may take a nurse several hours per patient. A research cohort of a few hundred patients can take a
+      year to assemble. And the questions that are never asked, because no one has time to read the notes, are the
+      largest cost of all.
+
+  - type: callout
+    kind: warning
+    title: "The safety cost"
+    text: |
+      When a plan is written in the text but never actioned, the patient is lost to follow-up. A missed scan, a
+      follow-up appointment that is never booked, a result that is noted but not acted on: these are among the most
+      common causes of serious incidents in outpatient care, and they are invisible to structured data because the
+      order was never created. The intention exists only in the note.
+
+  - type: heading
+    text: "Right data, right place, right time"
+
+  - type: paragraph
+    text: |
+      The teams that first built hospital-wide text analytics inside the NHS described their goal as the **three Rs**:
+      right data, in the right place, at the right time. A traditional information system is designed to collect data
+      at the point of care. It is not designed to give it back, in a usable form, to the clinician planning a service,
+      the auditor checking a standard, the researcher building a cohort or the manager asking how many patients the
+      hospital has with a given condition. Closing that gap, while staying within the strict information governance
+      rules that apply to health data, is what the rest of this course is about.
+
+  - type: callout
+    kind: key-message
+    text: |
+      Your data strategy is incomplete if it treats the text as unreachable. Most of what your hospital knows about its
+      patients is written in prose, and until it can be read by a machine, every audit, cohort and risk model is
+      working from a minority of the record.
+
+quiz:
+  questions:
+    - question: "Which of the following best describes 'structured data' in a hospital record?"
+      type: single
+      options:
+        - text: "Information held in defined fields with defined meanings, such as diagnosis codes and observation values, that a computer can count directly."
+          correct: true
+        - text: "Any information typed into the electronic record, including letters and notes."
+        - text: "Information that has been checked by a clinician for accuracy."
+        - text: "Data held in the hospital's data warehouse rather than the live record."
+      explanation: "Structured data sits in fields with a fixed meaning. Free text is also typed into the record, but a computer cannot count it without further processing."
+
+    - question: "Which of these kinds of information are usually found only in the free text of a record? Select all that apply."
+      type: multiple
+      options:
+        - text: "Family history, such as a parent's cancer diagnosis"
+          correct: true
+        - text: "Negative findings, such as 'no chest pain'"
+          correct: true
+        - text: "A clinician's intention to order a scan"
+          correct: true
+        - text: "The patient's date of birth"
+        - text: "A prescribed drug and its dose"
+      explanation: "Date of birth and prescriptions are reliably structured. Family history, negatives and plans are overwhelmingly recorded as prose."
+
+    - question: "Why do manual methods of extracting information from notes represent a safety problem as well as a cost problem?"
+      type: single
+      options:
+        - text: "Because questions that no one has time to read the notes for are never asked, and plans written in the text but never actioned go unnoticed."
+          correct: true
+        - text: "Because clinical coders are not medically qualified."
+        - text: "Because manual methods create too much structured data."
+        - text: "Because reading notes breaches information governance rules."
+      explanation: "The section's safety argument is about what manual methods miss, especially intentions recorded in text that are never carried out."
+
+    - question: "When machine extraction of stroke comorbidities from admission notes was compared with the manual data entered for a national audit at three hospitals, what did the comparison show?"
+      type: single
+      options:
+        - text: "The manual process had missed a substantial share of the comorbidities that clinicians had written in the notes."
+          correct: true
+        - text: "The manual process was more complete than the machine."
+        - text: "The two methods agreed perfectly."
+        - text: "The machine could not read the notes at all."
+      explanation: "Manual audit data collection is slow and incomplete. The text contained more than the audit forms recorded."
+
+    - question: "What does the 'three Rs' principle refer to?"
+      type: single
+      options:
+        - text: "Right data, right place, right time: giving information back to the people who need it in a usable form, within governance rules."
+          correct: true
+        - text: "Read, record, report: the three duties of a clinical coder."
+        - text: "Recruit, retain, retrain: the workforce strategy for informatics teams."
+        - text: "Reduce, reuse, recycle: a policy for managing paper notes."
+      explanation: "The principle describes the unmet need the first NHS text analytics platforms set out to address."
+
+    - question: "A trust board is told its clinical dashboards give a 'complete picture' of patient care because they draw on every coded field in the record. Based on this section, what is the most accurate response?"
+      type: single
+      options:
+        - text: "The dashboards reflect only the structured minority of the record; most clinical meaning is in text they cannot see."
+          correct: true
+        - text: "The claim is correct, because all clinically important facts are coded at discharge."
+        - text: "The claim is correct as long as the coding team is fully staffed."
+        - text: "The dashboards should be switched off until the text is included."
+      explanation: "Coded data is valuable but partial. The right response is to recognise the gap, not to abandon the dashboards."

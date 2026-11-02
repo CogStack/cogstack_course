@@ -1,0 +1,206 @@
+id: 03-how-a-computer-reads-a-note
+part: a
+title: "How a computer reads a clinical note"
+core_question: "How does it work, and how is accuracy measured?"
+duration_minutes: 30
+
+objectives:
+  - Describe the three steps by which a language model turns a clinical sentence into coded data.
+  - Explain why negation, family history and timing matter and why simple word-matching fails.
+  - Define precision, recall and F1 in everyday language.
+  - Explain why a model that performs well in one hospital must be checked in another.
+
+content:
+  - type: paragraph
+    text: |
+      This is the one section of the course that looks inside the machine. It stays concrete. We will follow a
+      single sentence from a discharge summary through the process, and then look at how the output is judged.
+
+  - type: callout
+    kind: evidence
+    title: "The sentence"
+    text: |
+      "Admitted with central chest pain; troponin negative, no evidence of MI. Mother had an MI at 60. Known T2DM
+      on metformin. Continue metformin, repeat ECG in clinic in 6 weeks."
+
+  - type: heading
+    text: "Step one: find the mentions"
+
+  - type: paragraph
+    text: |
+      The model first identifies the spans of text that refer to clinical concepts. In our sentence it should find
+      'chest pain', 'troponin', 'MI' (twice), 'T2DM', 'metformin' (twice), 'ECG' and 'clinic'. This is called **named
+      entity recognition**. It must cope with abbreviations, misspellings, local shorthand, and phrases spread across
+      several words. A clinician does this without noticing. A computer has to be taught.
+
+  - type: heading
+    text: "Step two: decide what each mention means"
+
+  - type: paragraph
+    text: |
+      'MI' could mean myocardial infarction, mitral incompetence, or the state of Michigan. 'Cold' could be a
+      temperature, a symptom or an infection. The model must pick the right concept from the standard vocabulary,
+      using the surrounding words as evidence. This is **linking** (or disambiguation). It is where a simple
+      dictionary approach fails most visibly: a dictionary knows the words but not the context.
+
+  - type: heading
+    text: "Step three: work out the context"
+
+  - type: paragraph
+    text: |
+      Having found and linked 'MI' twice, the model has not yet learned anything useful. The first 'MI' is
+      **negated** ('no evidence of MI'); recording it as a diagnosis would be wrong. The second 'MI' is about the
+      patient's **mother**, not the patient. 'T2DM' is **current and confirmed**. The ECG is a **plan**, not something
+      that has happened. For each concept the model therefore attaches context: present or absent, patient or
+      relative, current or historical, confirmed or suspected, done or planned. This step is what separates a usable
+      clinical tool from a keyword counter.
+
+  - type: table
+    headers: ["Mention", "Linked concept", "Present?", "Who?", "When?"]
+    rows:
+      - ["chest pain", "Central chest pain (finding)", "Yes", "Patient", "This admission"]
+      - ["MI (first)", "Myocardial infarction (disorder)", "No, negated", "Patient", "This admission"]
+      - ["MI (second)", "Myocardial infarction (disorder)", "Yes", "Mother", "Historical"]
+      - ["T2DM", "Type 2 diabetes mellitus (disorder)", "Yes", "Patient", "Current"]
+      - ["metformin", "Metformin (substance)", "Yes", "Patient", "Current, continuing"]
+      - ["ECG", "Electrocardiogram (procedure)", "Planned", "Patient", "Future"]
+
+  - type: heading
+    text: "How the model learns"
+
+  - type: paragraph
+    text: |
+      Modern clinical language models are not programmed with rules. They are trained. The open-source toolkits used
+      in the NHS start from a general model that has read the standard vocabulary and a very large volume of text,
+      and then improve through **supervised learning**: clinicians review the model's output on real documents in an
+      annotation tool, correct what is wrong, and the corrections are fed back. A few hundred corrected documents can
+      noticeably improve performance on a hospital's own text. This is why clinician time is not optional in these
+      projects, and why the people doing the correcting need to be clinically competent in the relevant domain.
+
+  - type: heading
+    text: "How accuracy is measured"
+
+  - type: paragraph
+    text: |
+      Three numbers appear in every evaluation. They are simple once put in words.
+
+  - type: list
+    items:
+      - term: "Precision."
+        text: "When the model says a concept is there, how often is it right? Low precision means false alarms: the model finds diabetes in patients who do not have it."
+      - term: "Recall."
+        text: "Of all the concepts that really are there, how many did the model find? Low recall means misses: real diabetics are left out of the cohort."
+      - term: "F1."
+        text: "A single number that combines precision and recall. It is high only if both are high. An F1 of 0.9 roughly means the model gets about nine of ten right in both directions."
+
+  - type: paragraph
+    text: |
+      Which matters more depends on the use. For a screening alert you may accept lower precision to get high recall,
+      because a missed patient is worse than an unnecessary check. For a research cohort you may want high precision
+      so that the patients included really have the condition. There is no single right answer, and the first question
+      to ask of any accuracy claim is: **measured against what, and for which use?**
+
+  - type: heading
+    text: "The gold standard, and why local checking matters"
+
+  - type: paragraph
+    text: |
+      Precision and recall can only be calculated against a **gold standard**: a set of documents that clinicians have
+      read and annotated by hand, so that the 'true' answer is known. The quality of the evaluation depends entirely on
+      who produced the gold standard, how many documents it contains, and whether it came from your hospital.
+
+      Clinical language differs between specialties, hospitals and record systems. A model trained on one hospital's
+      discharge summaries will perform differently on another hospital's clinic letters. Reviews of the field have
+      found that many published clinical NLP tools were tested only where they were built, and that reporting of
+      methods and data was often too thin to judge whether the results would hold elsewhere. That is why Part C of
+      this course insists on local validation before any tool is trusted.
+
+  - type: callout
+    kind: limits
+    text: |
+      Models make mistakes in predictable places: rare conditions they have seen little of, unusual phrasing,
+      ambiguous abbreviations, text copied and pasted from earlier notes (one study found a large share of clinical
+      text is repeated from earlier documents), and anything the training data did not cover. Performance figures from
+      elsewhere are a starting point, never a guarantee.
+
+  - type: callout
+    kind: key-message
+    text: |
+      A clinical language model finds mentions, links them to standard concepts, and works out their context. Its
+      accuracy is expressed as precision (how often it is right when it says yes) and recall (how much of the truth it
+      finds), measured against a clinician-annotated gold standard. Those figures only mean something for the hospital,
+      documents and purpose they were measured on.
+
+quiz:
+  questions:
+    - question: "What are the three steps by which a clinical language model turns a sentence into coded data?"
+      type: single
+      options:
+        - text: "Find the mentions, link each to a standard concept, work out its context (negated, relative, timing)."
+          correct: true
+        - text: "Spell-check, translate to Latin, store in a database."
+        - text: "Count the words, rank them by frequency, pick the top ten."
+        - text: "Scan the document, convert to PDF, upload to the cloud."
+      explanation: "Recognition, linking and contextualisation are the three stages described in the section."
+
+    - question: "In the sentence 'no evidence of MI. Mother had an MI at 60', why would a simple keyword search for 'MI' give a misleading result?"
+      type: single
+      options:
+        - text: "Both mentions would be counted as the patient having a heart attack, when one is negated and the other is about a relative."
+          correct: true
+        - text: "Keyword search cannot find two-letter words."
+        - text: "The word 'MI' is not in any clinical vocabulary."
+        - text: "The sentence is too long for a keyword search."
+      explanation: "Context (negation and experiencer) is what separates a usable clinical tool from a keyword counter."
+
+    - question: "A model has high recall but low precision for detecting a condition. What does that mean in practice?"
+      type: single
+      options:
+        - text: "It finds almost all the real cases but also flags many patients who do not have the condition."
+          correct: true
+        - text: "It misses most of the real cases but is rarely wrong when it does flag one."
+        - text: "It is equally good at both finding cases and avoiding false alarms."
+        - text: "It cannot be used for anything."
+      explanation: "Recall is about not missing real cases; precision is about not raising false alarms. High recall with low precision means thorough but noisy."
+
+    - question: "For which use would you most readily accept lower precision in return for higher recall?"
+      type: single
+      options:
+        - text: "A screening alert, where a missed patient is worse than an unnecessary check."
+          correct: true
+        - text: "A research cohort where every included patient must truly have the condition."
+        - text: "A board report counting the number of patients with the condition."
+        - text: "No use ever justifies lower precision."
+      explanation: "Screening tolerates false alarms to avoid misses. Research cohorts and counts generally want precision."
+
+    - question: "What is a 'gold standard' in the context of evaluating a language model?"
+      type: single
+      options:
+        - text: "A set of documents that clinicians have annotated by hand so that the true answer is known and the model's output can be compared against it."
+          correct: true
+        - text: "The best-performing commercial product on the market."
+        - text: "A national guideline that the model must follow."
+        - text: "The highest possible F1 score of 1.0."
+      explanation: "Without human-annotated truth there is nothing to measure precision and recall against."
+
+    - question: "Why must a model that performed well in one hospital be re-checked before being trusted in yours? Select all that apply."
+      type: multiple
+      options:
+        - text: "Clinical language differs between specialties, hospitals and record systems."
+          correct: true
+        - text: "Many published tools were tested only where they were built, with thin reporting of methods."
+          correct: true
+        - text: "Software licences expire when moved between hospitals."
+        - text: "Performance figures from elsewhere are a starting point, not a guarantee."
+          correct: true
+      explanation: "Local validation is required because language and documents differ, and because the evidence base for transferability is often weak. Licensing is not the reason."
+
+    - question: "How do the open-source clinical language models used in the NHS improve their performance on a hospital's own text?"
+      type: single
+      options:
+        - text: "Clinicians correct the model's output on real documents in an annotation tool and the corrections are used to retrain it."
+          correct: true
+        - text: "The vendor updates the software once a year."
+        - text: "The model automatically becomes accurate after processing enough documents without any human input."
+        - text: "Programmers write a rule for every clinical term."
+      explanation: "Supervised learning from clinician corrections is why clinician time is a necessary part of these projects."

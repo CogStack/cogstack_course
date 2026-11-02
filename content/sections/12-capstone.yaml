@@ -1,0 +1,204 @@
+id: 12-capstone
+part: c
+title: "Capstone: design a point solution for your own service"
+core_question: "What should my service do first?"
+duration_minutes: 30
+
+objectives:
+  - Apply the seven-part template to a real problem in your own service.
+  - Classify a proposed project by capability, maturity and governance route.
+  - Identify the missing parts in a flawed proposal.
+  - Choose a realistic level of ambition for a first project.
+
+content:
+  - type: paragraph
+    text: |
+      This final section asks you to use everything in the course. You will work through a one-page template for a
+      point solution, see three worked examples at different levels of ambition, and practise spotting what is missing
+      from proposals that are not ready. The quiz covers the whole course.
+
+  - type: heading
+    text: "The one-page template"
+
+  - type: paragraph
+    text: |
+      Write a sentence or two under each heading. If you cannot, the project is not ready to propose. Copy the headings
+      into a document and complete them for a real problem in your service.
+
+  - type: list
+    style: number
+    items:
+      - term: "Clinical question."
+        text: "What will be different for patients or staff, in one sentence a non-technical colleague would understand?"
+      - term: "Population."
+        text: "Which patients, which service, which time window?"
+      - term: "Documents and data flow."
+        text: "Which document types, from which system, how quickly do you need them after they are written?"
+      - term: "Capability required."
+        text: "Find, extract, watch, summarise or protect? Is that capability mature, or research?"
+      - term: "Local validation."
+        text: "Who will annotate the gold standard, how many documents, and what precision and recall would be good enough for this use?"
+      - term: "Route into the workflow."
+        text: "Where does the output appear, who looks at it, and when in their day?"
+      - term: "Outcome measure."
+        text: "What number about patients or staff will you compare before and after? What is the baseline today?"
+      - term: "Governance route."
+        text: "Direct care, audit, research or external? Does it touch individual decisions, and therefore need a clinical safety case or device registration?"
+      - term: "Team and time."
+        text: "Who leads clinically? Whose time is needed, for how long? When would first value appear?"
+      - term: "Honest limits."
+        text: "What will it miss? What happens when it is wrong? When would you switch it off?"
+
+  - type: heading
+    text: "Three worked examples"
+
+  - type: case_study
+    title: "Level 1: a search-only project that could start in weeks"
+    text: |
+      **Question:** how many patients under our rheumatology service have a documented history of a specific
+      complication, and are they all on the monitoring pathway? **Population:** all current rheumatology patients.
+      **Documents:** clinic letters, refreshed monthly. **Capability:** find (mature). **Validation:** a registrar
+      checks 50 of the returned patients and 50 of the non-returned against the notes. **Workflow:** a list reviewed
+      at the monthly governance meeting. **Outcome:** number of patients found who were not on the pathway, and
+      enrolled. **Governance:** service evaluation; no individual real-time alert, so not a device. **Team:** the
+      existing platform team plus one registrar session a month. **Limits:** misses patients whose complication was
+      never documented; counts depend on consistent documentation.
+    details:
+      Verdict: "Realistic first project. Low risk, quick value, builds the team's confidence and the service's trust."
+
+  - type: case_study
+    title: "Level 2: replacing manual audit data collection"
+    text: |
+      **Question:** reduce the nurse time spent collecting comorbidity data for a national audit while improving
+      completeness. **Population:** all patients admitted with the audited condition. **Documents:** admission
+      clerking and discharge summaries, available within a week of discharge. **Capability:** extract (mature for
+      common comorbidities). **Validation:** two clinicians annotate 200 admissions; precision and recall per
+      comorbidity; target agreed with the audit lead. **Workflow:** pre-populated audit forms that the nurse checks
+      and submits. **Outcome:** nurse hours per patient, and completeness compared with manual collection. **Governance:**
+      audit; supports a human who remains responsible; not a device. **Team:** platform team, a data scientist for
+      three months, clinician annotation time. **Limits:** rarer comorbidities will have lower recall; the nurse's check
+      is the safeguard.
+    details:
+      Verdict: "Strong second project. Clear saving, directly comparable to the published three-hospital stroke audit work, and keeps a human in the loop."
+
+  - type: case_study
+    title: "Level 3: an alert for patients at risk of being lost to follow-up"
+    text: |
+      **Question:** reduce patients in a surgical outpatient service for whom a documented intention to arrange
+      imaging or follow-up is never actioned. **Population:** patients seen in that clinic. **Documents:** clinic
+      notes within 24 hours, matched to the orders system. **Capability:** watch (demonstrated in the NHS, but each
+      deployment is local). **Validation:** 300 notes annotated for intent by two clinicians; precision high enough that
+      the team trusts the list. **Workflow:** a dashboard reviewed by a named nurse each morning. **Outcome:**
+      rate of unactioned intentions at 30 days, against a baseline measured first. **Governance:** direct care;
+      touches individual patients, so a clinical safety case, hazard log and clinical safety officer are required and
+      device status must be assessed. **Team:** platform team, data scientist, the clinic's lead consultant, a
+      nurse with protected time, the clinical safety officer. **Limits:** will miss intentions phrased unusually; a
+      false alarm costs a minute of nurse time, a miss costs nothing more than today's practice.
+    details:
+      Verdict: "Worthwhile but not a first project. Needs a mature team, a baseline, and the safety work. Plan for 12 to 24 months."
+
+  - type: heading
+    text: "Spotting what is missing"
+
+  - type: paragraph
+    text: |
+      Most proposals you will see are incomplete rather than wrong. The commonest gaps, in order of frequency, are: no
+      outcome measure other than a model metric; no baseline against which to judge improvement; no named owner of the
+      workflow; validation borrowed from another hospital; a generative capability presented as if it were extraction;
+      and governance that assumes research approval covers live use. If you can see these gaps, you have learned what
+      this course set out to teach.
+
+  - type: callout
+    kind: key-message
+    text: |
+      Start with a question your service already cares about, pick the most mature capability that answers it, validate
+      locally, put the output where someone already works, measure something about people, and get the governance route
+      right from the start. A search project in weeks, an extraction project in months, an alerting project in a year or
+      two: that is a realistic programme.
+
+quiz:
+  intro: |
+    This final quiz covers the whole course. Pass it to complete the course and unlock your certificate.
+  questions:
+    - question: "A proposal says: 'We will use NLP on our cardiology letters. Expected F1 of 0.9.' Using the template, which parts are missing? Select all that apply."
+      type: multiple
+      options:
+        - text: "A clinical question stating what will be different for patients or staff"
+          correct: true
+        - text: "An outcome measure that is not a model metric"
+          correct: true
+        - text: "A route into the workflow and a named owner"
+          correct: true
+        - text: "A statement of which document type is used"
+      explanation: "The proposal names the documents (cardiology letters) and a model metric. It has no question, no outcome and no workflow."
+
+    - question: "Which capability is most appropriate for a first project in a service that has never used text analytics?"
+      type: single
+      options:
+        - text: "Find: whole-record concept search for a question the service already cares about."
+          correct: true
+        - text: "Summarise and predict: generating discharge summaries automatically."
+        - text: "Watch: real-time alerts to individual clinicians."
+        - text: "None; a first project should always be hospital-wide."
+      explanation: "Search is mature, low risk and quick to deliver value. Alerting and generation need more team maturity and governance."
+
+    - question: "In the Level 3 worked example, why is a clinical safety case required when it was not for Levels 1 and 2?"
+      type: single
+      options:
+        - text: "Because the tool surfaces individual patients for action in live care, which could affect patient safety."
+          correct: true
+        - text: "Because it uses more documents."
+        - text: "Because surgical services are regulated differently."
+        - text: "Because it uses a dashboard."
+      explanation: "Effect on individual care is the trigger for safety and possibly device obligations, regardless of the technology used."
+
+    - question: "Why does the template insist on measuring a baseline before a tool goes live?"
+      type: single
+      options:
+        - text: "Without a before measurement there is no way to show that the tool changed anything for patients or staff."
+          correct: true
+        - text: "Because regulators require a baseline for all software."
+        - text: "Because baselines improve model accuracy."
+        - text: "It does not; baselines are optional."
+      explanation: "An outcome measure is a comparison. The baseline is half of it."
+
+    - question: "A proposal describes a tool that will 'automatically write the hospital course section of the discharge summary and file it to the GP'. Which two concerns from the course apply most directly? Select all that apply."
+      type: multiple
+      options:
+        - text: "It is a generative capability, which can be fluent and wrong, and is still research rather than service."
+          correct: true
+        - text: "Filing without clinician review removes the only accepted safeguard for generated clinical text."
+          correct: true
+        - text: "Discharge summaries are structured data and do not need NLP."
+        - text: "GPs cannot receive electronic documents."
+      explanation: "Generation requires a clinician to read, edit and sign every output. Automatic filing violates that."
+
+    - question: "Which statement about validation reflects the course's position?"
+      type: single
+      options:
+        - text: "A published model is a starting point; it must be validated on this hospital's documents, with hard cases shown separately, before it is trusted."
+          correct: true
+        - text: "A model published in a leading journal can be deployed without further checking."
+        - text: "Validation is only needed for commercial products."
+        - text: "Validation is a one-off event that never needs repeating."
+      explanation: "Local validation and re-validation for drift are central to Sections 3 and 10."
+
+    - question: "A hospital-wide text index has produced 157 million coded concepts. A manager asks what this means for the organisation. Which answer best reflects the course?"
+      type: single
+      options:
+        - text: "The prose majority of the record is now searchable and countable, which enables audit, cohort building and service planning; each specific use still needs validation and the right governance."
+          correct: true
+        - text: "The hospital's data problems are solved."
+        - text: "The index can now diagnose patients."
+        - text: "The data can be shared freely because it is coded."
+      explanation: "Infrastructure enables point solutions; it does not replace validation or governance for each one."
+
+    - question: "Which of these is the correct order of realistic ambition for a new programme, from first to later?"
+      type: single
+      options:
+        - text: "Search project in weeks; extraction project in months; alerting project in a year or two."
+          correct: true
+        - text: "Alerting first, then search, then extraction."
+        - text: "Generative summaries first, because they attract the most attention."
+        - text: "Everything at once, hospital-wide."
+      explanation: "Maturity and governance burden rise from find to extract to watch. The programme should follow that gradient."

@@ -1,0 +1,166 @@
+id: 05-extract
+part: b
+title: "Extract: structuring the record for coding, audit and registries"
+core_question: "Can we stop doing this by hand?"
+duration_minutes: 25
+
+objectives:
+  - Explain how text extraction can replace or support manual coding, audit data collection and registry entry.
+  - Describe what the national stroke audit comparison showed and why it matters.
+  - Explain what it means to structure information at the point of writing.
+  - Identify the kinds of content that extraction handles poorly.
+
+content:
+  - type: paragraph
+    text: |
+      Section 4 was about finding documents and patients. This section is about turning what those documents say
+      into structured fields, at scale, so that the work currently done by reading can be done by machine and checked
+      by people.
+
+  - type: heading
+    text: "Audit and registries"
+
+  - type: paragraph
+    text: |
+      National clinical audits and disease registries depend on data entered by hand from the notes. The work is
+      valued and the data are important, but the process is slow, expensive and, as it turns out, incomplete.
+
+  - type: case_study
+    title: "Stroke comorbidities across three hospitals"
+    text: |
+      For a national stroke audit, staff record each patient's comorbidities (atrial fibrillation, hypertension,
+      diabetes, previous stroke and others) from the notes. A study across three NHS hospitals compared 2,327 stroke
+      admissions as recorded for the audit against what a language model extracted from the same patients' notes, with
+      a sample of 200 checked by hand to establish the truth. The manual audit entries were good for the most prominent
+      conditions but poor for several others, and the model identified comorbidities that the audit had missed. The
+      authors concluded that machine-assisted curation could improve both the completeness and the consistency of
+      audit data while reducing the burden on staff.
+    details:
+      Capability: "Extract (structured fields from notes for a national audit)"
+      Scale: "2,327 admissions, three hospitals, two different record systems"
+      Lesson: "Manual audit data are less complete than the notes; the machine found what the forms missed"
+
+  - type: paragraph
+    text: |
+      The same approach has been applied to quantify the hospital burden of hyperkalaemia from laboratory and text
+      data, to extract symptoms from ear, nose and throat clinic letters, to check the accuracy of diagnosis coding
+      against the clinical narrative, and to build phenotype definitions for conditions such as heart failure and
+      multiple sclerosis from the combination of text and structured data.
+
+  - type: heading
+    text: "Coding"
+
+  - type: paragraph
+    text: |
+      Clinical coding translates discharge documentation into diagnosis and procedure codes that drive payment,
+      performance measures and national statistics. It happens weeks after the event, by coders reading what
+      clinicians wrote. Text extraction can support coders by suggesting codes with the supporting text highlighted,
+      can audit existing codes against the narrative, and in research settings has been used to generate explainable
+      automated coding where each suggested code is tied to the sentence that justifies it. The honest state of the
+      art is **assist, not replace**: coders remain responsible, and the gain is speed and consistency.
+
+  - type: heading
+    text: "Structuring at the point of writing"
+
+  - type: paragraph
+    text: |
+      The most ambitious form of extraction moves it from months after discharge to the moment of documentation. In
+      one London hospital group, a tool embedded in the electronic record reads the clinician's note as it is written,
+      proposes the diagnoses, problems and medications it finds as structured entries, and asks the clinician to
+      confirm or reject them with a click. The record gains structured data at the time of care, the clinician's
+      workload is close to unchanged, and every confirmation improves the model.
+
+  - type: case_study
+    title: "Linking letters to patient information"
+    text: |
+      A neurosurgical centre wanted patients considering spinal surgery to receive accurate information about their
+      specific procedure. An off-the-shelf clinical language model, not yet trained on the centre's own letters, read
+      199 clinic letters and identified 582 surgical procedures, linking each to its standard concept. Investigators
+      compared the model's output against their own reading of the letters, found it performed well enough to be
+      useful, and built a pipeline that linked each letter to the matching patient education material.
+    details:
+      Capability: "Extract (procedures from clinic letters)"
+      Scale: "199 letters, 582 procedures"
+      Note: "Even untrained on local text the model was useful; local training would improve it further"
+
+  - type: callout
+    kind: limits
+    text: |
+      Extraction is only as good as the model's training and the local validation. It handles common conditions,
+      drugs and procedures well. It struggles with rare conditions it has rarely seen, unusual or highly specialised
+      phrasing, ambiguous abbreviations, and text copied forward from earlier notes, which can make a resolved problem
+      look current. It cannot extract what clinicians did not write, and it will faithfully structure a wrong
+      diagnosis if one was documented. Every extraction pipeline needs a defined error rate, measured locally, and a
+      person accountable for the results.
+
+  - type: callout
+    kind: key-message
+    text: |
+      Text extraction turns the manual work of coding, audit data collection and registry entry into machine work
+      checked by people. In real NHS comparisons it has found what the forms missed. Its most advanced form puts the
+      structured data into the record at the moment of writing. Its limits are rare content, odd phrasing and
+      copied text, and the remedy is local validation and clear accountability.
+
+quiz:
+  questions:
+    - question: "What did the three-hospital stroke audit comparison conclude?"
+      type: single
+      options:
+        - text: "Manual audit entries were good for prominent conditions but poor for others, and the model found comorbidities the audit had missed."
+          correct: true
+        - text: "The model was unable to read stroke notes."
+        - text: "Manual audit data were complete and the model added nothing."
+        - text: "Stroke audit should be abolished."
+      explanation: "The study showed that machine-assisted curation could improve completeness and consistency while reducing staff burden."
+
+    - question: "What is the honest current role of text extraction in clinical coding?"
+      type: single
+      options:
+        - text: "Assist, not replace: suggest codes with supporting text and audit existing codes, with coders remaining responsible."
+          correct: true
+        - text: "Full replacement of clinical coders."
+        - text: "It has no role; coding must be done by hand for legal reasons."
+        - text: "It is used only to code radiology reports."
+      explanation: "The gain is speed and consistency. Responsibility stays with the coders."
+
+    - question: "What does 'structuring at the point of writing' mean?"
+      type: single
+      options:
+        - text: "A tool embedded in the record reads the note as it is written and asks the clinician to confirm the structured entries it proposes."
+          correct: true
+        - text: "Clinicians must type into a fixed template instead of free text."
+        - text: "Coders sit with clinicians during consultations."
+        - text: "Notes are structured by a batch process every night."
+      explanation: "The record gains structured data at the time of care with minimal extra work for the clinician."
+
+    - question: "In the spinal letters case study, the model had not been trained on the centre's own letters. What is the correct reading of this?"
+      type: single
+      options:
+        - text: "An off-the-shelf model was already useful, and local training would be expected to improve it further."
+          correct: true
+        - text: "Training on local data is never necessary."
+        - text: "The results are invalid because the model was untrained."
+        - text: "Spinal surgery letters do not need to be read."
+      explanation: "Off-the-shelf performance is a useful baseline; local training usually improves it. Both statements are true."
+
+    - question: "Which kinds of content does extraction handle poorly? Select all that apply."
+      type: multiple
+      options:
+        - text: "Rare conditions the model has seldom seen"
+          correct: true
+        - text: "Text copied forward from earlier notes, which can make a resolved problem look current"
+          correct: true
+        - text: "Common drugs with standard names"
+        - text: "Ambiguous abbreviations and highly specialised phrasing"
+          correct: true
+      explanation: "Common, standardly named content is where extraction is strongest. Rare, copied and ambiguous content is where it fails."
+
+    - question: "A pipeline extracts a diagnosis that was documented in error by a clinician. What will the extraction do?"
+      type: single
+      options:
+        - text: "Faithfully structure the wrong diagnosis; extraction cannot correct what was written."
+          correct: true
+        - text: "Detect the error and alert the clinician."
+        - text: "Refuse to process the document."
+        - text: "Replace it with the most likely correct diagnosis."
+      explanation: "Extraction reflects the record. Errors in documentation become errors in the structured output, which is why accountability matters."

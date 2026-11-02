@@ -1,0 +1,153 @@
+id: 04-find
+part: b
+title: "Find: searching the whole record and building cohorts"
+core_question: "Can we find the patients we need to find?"
+duration_minutes: 20
+
+objectives:
+  - Distinguish keyword search from concept search and say why the difference matters clinically.
+  - Give examples of service, audit and research questions that whole-record search answers quickly.
+  - State what search cannot tell you.
+
+content:
+  - type: paragraph
+    text: |
+      The simplest capability is also the most mature and the most immediately useful. Once every document in the
+      hospital is indexed and tagged with clinical concepts, anyone with the right permissions can ask the record a
+      question and get an answer in seconds, where previously the answer required a request to the information team,
+      a wait of weeks, and a result that covered only coded data.
+
+  - type: heading
+    text: "Keyword search versus concept search"
+
+  - type: paragraph
+    text: |
+      **Keyword search** finds documents containing a word. It is useful, fast and easy to understand. It is also
+      clinically crude: a search for 'diabetes' returns patients with diabetes, patients whose mother had diabetes,
+      patients in whom diabetes was excluded, and a dietitian's leaflet that mentions diabetes in passing.
+
+      **Concept search** uses the output of the language model described in Section 3. It finds documents where the
+      concept 'type 2 diabetes' is present, affirmed, and about the patient. It can also search by relationship:
+      every patient with any form of inflammatory bowel disease, because the vocabulary knows that Crohn's disease and
+      ulcerative colitis are both kinds of inflammatory bowel disease. And it can combine concepts with structured
+      data: patients over 65, admitted in the last year, with a mention of falls in their notes and no bone density
+      scan on record.
+
+  - type: heading
+    text: "What people use it for"
+
+  - type: list
+    items:
+      - term: "Counting."
+        text: "How many patients do we treat with a given condition? For common conditions, coded data gives a rough answer. For symptoms, rare diseases, complications and social factors, only the text does."
+      - term: "Cohort building for research."
+        text: "Identifying every patient who meets a trial's eligibility criteria, or assembling a retrospective cohort for an observational study, in days rather than months. Several of the early NHS deployments reported that this was the first thing researchers asked for."
+      - term: "Rare disease identification."
+        text: "Rare conditions are coded inconsistently or not at all. Text search across a decade of letters finds the patients who have been described but never coded, and has been used to characterise populations with conditions such as normal pressure hydrocephalus and inherited aortic disease."
+      - term: "Service planning."
+        text: "Which clinics see patients with a condition? Where do they come from? How often do they attend A&E? Combining text-derived concepts with structured activity data gives a picture no single source provides."
+      - term: "Urgent questions."
+        text: "In the first wave of COVID-19, one London hospital was able to answer pressing clinical questions within weeks, because its text was already indexed and coded."
+
+  - type: case_study
+    title: "Answering an urgent question during a pandemic"
+    text: |
+      In early 2020 there was concern that a common class of blood pressure drugs might worsen COVID-19 outcomes.
+      A London hospital group used its indexed and coded record to identify 1,200 consecutive inpatients with COVID-19,
+      extract their medications, comorbidities and outcomes from both structured data and text, and publish an
+      analysis within weeks. It found no evidence of increased severity in patients on those drugs. The speed was
+      possible only because the text had already been processed; the clinical question was asked and answered before a
+      manually built cohort could have been assembled.
+    details:
+      Capability: "Find (cohort identification combining text and structured data)"
+      Scale: "1,200 consecutive inpatients across two hospitals"
+      Value: "An answer to a live clinical question within weeks rather than months"
+
+  - type: case_study
+    title: "Finding the uncoded"
+    text: |
+      A neurosurgical service wanted to understand its population of patients with a rare condition that is often
+      recorded in letters but rarely coded. Searching concept-tagged letters across many years identified a patient
+      group several times larger than the coded data suggested, and allowed the service to describe their presenting
+      features, pathways and outcomes. The same approach has been used for other rare and under-coded conditions.
+    details:
+      Capability: "Find (rare disease identification)"
+      Why text was needed: "The condition is described in prose far more often than it is coded"
+
+  - type: callout
+    kind: limits
+    text: |
+      Search finds what was written. It does not find what was never documented, and it inherits every
+      inconsistency in how clinicians write. A patient whose diabetes is never mentioned in any note will not be
+      found. A search that returns 400 patients is a list to be checked, not a verified cohort; concept search raises
+      the precision of the list, but a human still confirms the cases that matter. And a count derived from text is
+      only comparable over time if documentation habits have stayed the same.
+
+  - type: callout
+    kind: key-message
+    text: |
+      Whole-record concept search turns 'how many patients do we have with X?' from a months-long request into a
+      question answered in minutes, and lets research, audit and service planning start from the whole record rather
+      than the coded fraction. It is mature, low-risk and usually the right first project.
+
+quiz:
+  questions:
+    - question: "What distinguishes concept search from keyword search?"
+      type: single
+      options:
+        - text: "Concept search uses the language model's output to find a clinical concept that is present, affirmed and about the patient, and can use relationships between concepts."
+          correct: true
+        - text: "Concept search is slower but searches more documents."
+        - text: "Keyword search can only be used by clinicians."
+        - text: "There is no practical difference."
+      explanation: "Keyword search matches words; concept search matches meaning and context."
+
+    - question: "Why are rare diseases a particularly good use of whole-record text search?"
+      type: single
+      options:
+        - text: "Rare conditions are coded inconsistently or not at all, but are described in letters, so text finds patients the coded data misses."
+          correct: true
+        - text: "Rare diseases have simpler names that are easier to search for."
+        - text: "Rare diseases are always coded correctly, so search validates the codes."
+        - text: "Rare disease patients write their own notes."
+      explanation: "Under-coding is the problem; the text contains the description even when no code was ever entered."
+
+    - question: "In the pandemic case study, what made it possible to answer the question about blood pressure drugs within weeks?"
+      type: single
+      options:
+        - text: "The hospital's text had already been indexed and coded, so a cohort could be built and medications and outcomes extracted without manual note review."
+          correct: true
+        - text: "The hospital stopped all other research."
+        - text: "The patients were asked to fill in a survey."
+        - text: "The drugs were all recorded in structured prescribing data, so text was not needed."
+      explanation: "Prior investment in indexing meant the cohort and its features could be assembled quickly from both text and structured data."
+
+    - question: "A search returns 400 patients with a mention of a condition. What is the correct way to treat that result?"
+      type: single
+      options:
+        - text: "As a list to be checked; concept search improves precision but humans still confirm the cases that matter."
+          correct: true
+        - text: "As a verified cohort ready for publication."
+        - text: "As an exact count of patients with the condition in the hospital."
+        - text: "As evidence that the condition is being over-diagnosed."
+      explanation: "Search results are a starting point. The limits box is explicit that human confirmation remains necessary."
+
+    - question: "Which of these can whole-record search NOT do?"
+      type: single
+      options:
+        - text: "Find a patient whose condition was never written down in any document."
+          correct: true
+        - text: "Combine text-derived concepts with structured data such as age and admission date."
+        - text: "Find every patient with any form of a broad condition using vocabulary relationships."
+        - text: "Count mentions of a symptom across a decade of letters."
+      explanation: "Search finds what was written. It cannot find what was never documented."
+
+    - question: "Why is 'find' usually recommended as a hospital's first text analytics project?"
+      type: single
+      options:
+        - text: "It is mature, low-risk, delivers value quickly and does not influence individual clinical decisions in real time."
+          correct: true
+        - text: "It is the only capability that is legal in the NHS."
+        - text: "It requires no governance approval."
+        - text: "It is the most technically complex, so it proves the team's skills."
+      explanation: "Search is the lowest-risk capability with the quickest payback. It still needs governance."

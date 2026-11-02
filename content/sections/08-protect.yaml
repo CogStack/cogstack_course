@@ -1,0 +1,188 @@
+id: 08-protect
+part: b
+title: "Protect: de-identification, trusted research environments and the limits of anonymity"
+core_question: "How do we do this lawfully and safely?"
+duration_minutes: 25
+
+objectives:
+  - Explain what de-identification of free text removes and what it leaves behind.
+  - Explain why 'de-identified' is not the same as 'anonymous'.
+  - Describe a trusted research environment and why the data never leaves the hospital.
+  - Match common uses of text data to the governance route they require.
+
+content:
+  - type: paragraph
+    text: |
+      Nothing in this course is possible without information governance, and nothing destroys a programme faster
+      than getting it wrong. This section is written for the person who has to sign the forms, chair the committee
+      or answer the question at the board, rather than the person who writes the policy.
+
+  - type: heading
+    text: "De-identifying free text"
+
+  - type: paragraph
+    text: |
+      Structured data can be de-identified by removing columns. Free text cannot: names, dates, addresses, phone
+      numbers, hospital numbers and the names of relatives appear anywhere in the prose, in any format. Removing them
+      is itself a language processing task, and until recently it was done with rules and pattern-matching that both
+      missed identifiers and over-redacted clinical content.
+
+  - type: case_study
+    title: "A de-identification model across three hospitals"
+    text: |
+      Researchers trained a transformer-based de-identification model on 3,116 real documents, manually annotated for
+      identifiers, from three UK hospitals using different record systems. The model achieved recall of 0.99, 0.99 and
+      0.96 for identifiable information across the three sites, meaning it found between 96% and 99% of the identifiers
+      a human annotator found. The authors presented it as a blueprint for deploying de-identification in real
+      hospitals, including the need to check and tune performance at each new site.
+    details:
+      Capability: "Protect (automated removal of identifiers from text)"
+      Performance: "Recall 0.96 to 0.99 across three hospitals with different record systems"
+      Lesson: "Very good is not perfect; a 1 to 4 percent miss rate at hospital scale is thousands of identifiers"
+
+  - type: callout
+    kind: warning
+    title: "Why 99 percent is both excellent and not enough"
+    text: |
+      A recall of 0.99 is close to the best that any method, human or machine, achieves. It also means that in a
+      million documents, tens of thousands of identifiers may remain. De-identification is therefore a strong control
+      that reduces risk; it is not a transformation that makes data safe to release. It must sit inside a governance
+      framework that controls who can see the data, where, and for what.
+
+  - type: heading
+    text: "De-identified is not anonymous"
+
+  - type: paragraph
+    text: |
+      Even with every name and number removed, a clinical narrative is rich in detail: a rare combination of
+      conditions, an unusual occupation, a specific sequence of admissions. Research in 2025 demonstrated that the
+      clinical entities themselves, extracted from de-identified text, can be used in inference attacks that re-link
+      records to individuals under some conditions. This does not make de-identification pointless; it makes the
+      point that under data protection law such data remains **personal data**, subject to the full set of
+      obligations, and that 'we removed the names' is never a complete answer.
+
+  - type: heading
+    text: "Trusted research environments"
+
+  - type: paragraph
+    text: |
+      The practical response is to move the people to the data rather than the data to the people. A **trusted
+      research environment** (TRE), sometimes called a secure data environment, is a controlled computing space inside
+      the hospital's governance boundary. Approved analysts log in, work with the data there, and may take out only
+      aggregate results that have been checked for disclosure risk. Nothing identifiable, and ideally nothing at
+      record level, ever leaves. Several of the NHS platforms described in this course provide exactly this
+      environment on top of the indexed record, and national programmes now expect it.
+
+  - type: list
+    items:
+      - term: "Five safes."
+        text: "TREs are usually designed around the 'five safes': safe people (trained and approved), safe projects (approved purpose), safe settings (controlled environment), safe data (minimised and de-identified) and safe outputs (checked before release)."
+      - term: "Audit trail."
+        text: "Every query and export is logged. This is what allows a hospital to answer 'who looked at what, and why?'"
+
+  - type: heading
+    text: "Which uses need which approvals"
+
+  - type: paragraph
+    text: |
+      The governance route depends on the purpose. The categories below are a simplification of UK practice and your
+      own information governance team's judgement always prevails, but the distinctions are the ones that matter.
+
+  - type: table
+    headers: ["Purpose", "Example", "Typical basis and controls"]
+    rows:
+      - ["Direct care", "An alert that a patient may be lost to follow-up, shown to their treating team", "Implied consent for direct care; clinical safety case; the team already has a legitimate relationship with the patient"]
+      - ["Service evaluation and audit", "Measuring comorbidity completeness for a national audit", "Local approval; identifiable data used only by the care team or de-identified for analysts; no research ethics approval usually required"]
+      - ["Research", "Building a cohort to study treatment outcomes", "Research ethics approval; data protection impact assessment; de-identified data in a TRE; national data opt-out honoured where applicable"]
+      - ["Commercial or external access", "A company training a model on hospital text", "Full legal and ethical review; data sharing agreement; usually only within a TRE with no raw export; expect close scrutiny"]
+
+  - type: paragraph
+    text: |
+      Across all of these sit the **Caldicott principles**, including the requirement that the duty to share
+      information for direct care can be as important as the duty to protect it, and the requirement to use the
+      minimum necessary data. A **data protection impact assessment** (DPIA) is needed for any new processing of
+      health data at scale, which includes installing a text analytics platform in the first place.
+
+  - type: callout
+    kind: key-message
+    text: |
+      Free-text de-identification is now very good but never perfect, and de-identified clinical text remains personal
+      data because the clinical detail itself can identify. The answer is a trusted research environment where
+      approved people work with minimised data inside the hospital's boundary, under an audit trail, with the
+      governance route determined by the purpose: direct care, audit, research or external access.
+
+quiz:
+  questions:
+    - question: "Why is de-identifying free text harder than de-identifying structured data?"
+      type: single
+      options:
+        - text: "Identifiers can appear anywhere in the prose in any format, so removing them is itself a language processing task rather than a matter of dropping columns."
+          correct: true
+        - text: "Free text is stored on different servers."
+        - text: "Free text contains no identifiers."
+        - text: "Structured data cannot be de-identified at all."
+      explanation: "Names, dates and numbers in prose have to be found before they can be removed."
+
+    - question: "The de-identification model achieved recall of 0.96 to 0.99 across three hospitals. How should a leader interpret this?"
+      type: single
+      options:
+        - text: "It is close to the best achievable and a strong risk control, but at hospital scale it still leaves many identifiers, so it must sit within a governance framework."
+          correct: true
+        - text: "The data is now anonymous and can be released publicly."
+        - text: "The model has failed and should not be used."
+        - text: "Recall is irrelevant for de-identification."
+      explanation: "Very good is not perfect. One to four percent of identifiers across millions of documents is a large number."
+
+    - question: "Why is de-identified clinical text still considered personal data?"
+      type: single
+      options:
+        - text: "The clinical detail itself (rare condition combinations, occupations, sequences of events) can be used to re-identify individuals under some conditions."
+          correct: true
+        - text: "Because the hospital's name remains in the document."
+        - text: "Because it is stored electronically."
+        - text: "It is not; once names are removed it is anonymous."
+      explanation: "Research has shown inference attacks using extracted clinical entities. The legal obligations therefore remain."
+
+    - question: "What is a trusted research environment?"
+      type: single
+      options:
+        - text: "A controlled computing space inside the hospital's governance boundary where approved analysts work with minimised data and only checked aggregate outputs leave."
+          correct: true
+        - text: "A university department that the hospital trusts."
+        - text: "A cloud service to which the hospital uploads patient records."
+        - text: "A locked filing cabinet for paper research notes."
+      explanation: "The principle is to move the people to the data, not the data to the people."
+
+    - question: "Which of the following are among the 'five safes' used to design trusted research environments? Select all that apply."
+      type: multiple
+      options:
+        - text: "Safe people"
+          correct: true
+        - text: "Safe projects"
+          correct: true
+        - text: "Safe outputs"
+          correct: true
+        - text: "Safe prices"
+      explanation: "The five safes are people, projects, settings, data and outputs."
+
+    - question: "A clinical team wants an alert, shown only to them, when one of their own patients appears to be lost to follow-up. Which governance category does this fall into?"
+      type: single
+      options:
+        - text: "Direct care: implied consent applies, the team has a legitimate relationship with the patient, and a clinical safety case is needed."
+          correct: true
+        - text: "Research: research ethics approval is needed before any alert can be shown."
+        - text: "Commercial access: a data sharing agreement is needed."
+        - text: "None: alerts need no governance."
+      explanation: "Alerts to the treating team about their own patients are direct care, with the safety obligations that implies."
+
+    - question: "A company proposes to train its model on the hospital's clinical text. Based on this section, which conditions would you expect? Select all that apply."
+      type: multiple
+      options:
+        - text: "Full legal and ethical review and a data sharing agreement"
+          correct: true
+        - text: "Work confined to a trusted research environment with no raw export"
+          correct: true
+        - text: "Close scrutiny of purpose and benefit"
+          correct: true
+        - text: "A simple email approval from the IT department"
+      explanation: "External and commercial access is the most heavily controlled category. Informal approval is never sufficient."

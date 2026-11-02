@@ -1,0 +1,109 @@
+# Course manifest. The app reads this file first, then each section file listed below.
+# Edit content here and in content/sections/*.yaml. No code changes are needed to change the course.
+
+title: "Clinical Text AI for Healthcare Leaders"
+short_title: "Clinical Text AI for Leaders"
+subtitle: "What natural language processing can really do with your hospital's records, and what it cannot"
+
+description: |
+  Most of what clinicians know about a patient is written down as prose: clinic letters, discharge summaries,
+  nursing notes, radiology reports. Very little of it is ever turned into data that can be counted, searched or
+  monitored. A family of technologies known as clinical natural language processing (NLP) now makes that possible,
+  and open-source platforms built inside the NHS have been running it across whole hospitals for several years.
+
+  This course is for the people who have to decide whether, when and how to use this technology. It explains the
+  real capabilities in plain language, shows where each one has been used and what the evidence says, and is
+  honest about the limits. The second half shows how those capabilities are assembled into practical tools for
+  clinical teams, and what it takes to validate, govern and run them safely.
+
+audience: >
+  Medical directors, chief nurses, divisional and clinical leads, senior consultants, senior nurses and allied
+  health professionals, service managers, chief operating and information officers, information governance leads
+  and board members. No technical background is assumed.
+
+how_it_works: |
+  The course has twelve sections in three parts. Part A gives you the foundations and must be completed first, in
+  order. Part B covers five building blocks, which you may take in any order once Part A is done. Part C shows how
+  the blocks are assembled into tools for clinical teams, and must be taken in order after Part B.
+
+  Each section ends with a short quiz. You must score at least the pass mark to complete a section and unlock the
+  next. You may retake a quiz as many times as you need. Your progress is saved in this browser only; nothing is
+  sent to any server. When every section is complete you can print a certificate for your CPD portfolio.
+
+footer: >
+  Self-directed CPD course. Progress is stored only in your browser. All content is loaded from YAML files in the
+  content folder of this site.
+
+cpd:
+  label: "CPD course · approx. 5 hours"
+  hours: 5
+  pass_mark: 80
+  certificate_heading: "Certificate of completion · Continuing professional development"
+  statement: >
+    This certificate records self-directed learning. The holder completed all twelve sections and passed each
+    end-of-section assessment at or above the course pass mark of 80%. Learners should record this activity in
+    their own CPD portfolio and reflect on how it applies to their role.
+
+outcomes:
+  - Explain, in one minute, what a clinical text analytics platform is and what it is not.
+  - Describe why free text matters and why a data strategy that ignores it is working from a minority of the record.
+  - Name the five building blocks (find, extract, watch, summarise, protect), give a real example of each, and say which are mature and which are still research.
+  - Read an accuracy claim critically, understand precision and recall in plain terms, and explain why a model must be checked locally before it is trusted.
+  - Recognise the seven parts of a well-designed clinical NLP point solution and spot which are missing from a proposal.
+  - Ask the right questions of a proposal, a partner or a vendor about governance, maintenance, safety, cost and failure modes.
+  - Sketch a realistic first project for your own service on one page.
+
+parts:
+  - id: a
+    label: "Part A"
+    title: "Foundations"
+    description: "Why free text matters, what the technology is, and how a computer reads a clinical note. Complete these three sections first, in order."
+    unlock: sequential
+  - id: b
+    label: "Part B"
+    title: "The building blocks"
+    description: "Five capabilities, each with real deployments, the evidence, and the limits. Take these in any order."
+    unlock: any
+  - id: c
+    label: "Part C"
+    title: "Building point solutions"
+    description: "How the blocks become tools for clinical teams, how to validate and govern them, and how to design your own. Take these in order."
+    unlock: sequential
+
+sections:
+  - id: 01-where-information-lives
+    part: a
+    file: sections/01-where-information-lives.yaml
+  - id: 02-what-the-platform-is
+    part: a
+    file: sections/02-what-the-platform-is.yaml
+  - id: 03-how-a-computer-reads-a-note
+    part: a
+    file: sections/03-how-a-computer-reads-a-note.yaml
+  - id: 04-find
+    part: b
+    file: sections/04-find.yaml
+  - id: 05-extract
+    part: b
+    file: sections/05-extract.yaml
+  - id: 06-watch
+    part: b
+    file: sections/06-watch.yaml
+  - id: 07-summarise-and-predict
+    part: b
+    file: sections/07-summarise-and-predict.yaml
+  - id: 08-protect
+    part: b
+    file: sections/08-protect.yaml
+  - id: 09-anatomy-of-a-point-solution
+    part: c
+    file: sections/09-anatomy-of-a-point-solution.yaml
+  - id: 10-validation-and-safety
+    part: c
+    file: sections/10-validation-and-safety.yaml
+  - id: 11-people-money-governance
+    part: c
+    file: sections/11-people-money-governance.yaml
+  - id: 12-capstone
+    part: c
+    file: sections/12-capstone.yaml

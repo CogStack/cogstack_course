@@ -1,0 +1,181 @@
+id: 09-anatomy-of-a-point-solution
+part: c
+title: "The anatomy of a clinical NLP point solution"
+core_question: "What does a good tool consist of?"
+duration_minutes: 25
+
+objectives:
+  - List the seven parts that every successful clinical NLP point solution has.
+  - Distinguish an outcome measure from a model metric.
+  - Dissect a real deployment against the seven-part template and identify its strengths and weak points.
+
+content:
+  - type: paragraph
+    text: |
+      Part B described five capabilities. None of them is a tool. A **point solution** is a narrow tool that helps a
+      specific team with a specific problem, built by combining one or more capabilities with a workflow and a way of
+      measuring whether anything improved. This section gives you the template that every successful deployment in
+      the literature shares, and then uses it to take three real tools apart.
+
+  - type: heading
+    text: "The seven parts"
+
+  - type: list
+    style: number
+    items:
+      - term: "A clinical question"
+        text: "stated so that a non-technical person can tell whether it was answered. 'Reduce patients lost to follow-up in neurology outpatients' is a question. 'Deploy NLP in neurology' is not."
+      - term: "A defined population."
+        text: "Which patients, which service, which time window. Scope creep is the commonest cause of a project that never finishes."
+      - term: "A data flow."
+        text: "Which documents, from which system, how often, and with what delay. A tool that needs notes within an hour of writing is a different engineering task from one that runs monthly."
+      - term: "An extraction or classification model."
+        text: "The capability from Part B that does the work, with a statement of what it is trained on and what it is expected to find."
+      - term: "A local validation."
+        text: "A clinician-annotated gold standard from this hospital, this document type and this population, and the precision and recall measured against it. Section 10 covers this in depth."
+      - term: "A route into the workflow."
+        text: "Where the output appears and who sees it: a worklist, a dashboard, an alert, a field in the record, a report to a meeting. If no one's working day changes, nothing will happen."
+      - term: "An outcome measure"
+        text: "that is about patients or staff, not about the model. Fewer missed follow-ups, hours of audit time saved, more patients monitored to guideline. F1 is a model metric. It is not an outcome."
+
+  - type: callout
+    kind: key-message
+    title: "Outcome measure versus model metric"
+    text: |
+      A model metric says how well the model reads text. An outcome measure says whether patients or staff are better
+      off. A tool can have an F1 of 0.95 and change nothing, because no one looked at the dashboard. The question to
+      ask of any proposal is: **what will be different for patients or staff, and how will we know?**
+
+  - type: heading
+    text: "Three deployments, dissected"
+
+  - type: case_study
+    title: "Lost-to-follow-up alerting"
+    text: |
+      **Question:** reduce patients lost to follow-up after outpatient consultation. **Population:** outpatients in a
+      hospital group where an intention to act was documented. **Data flow:** outpatient notes as written, matched
+      against the orders system within a defined window. **Model:** a classifier trained on the hospital's own notes to
+      detect clinical intent, around 0.90 precision and recall. **Validation:** local, with a manually labelled test
+      set. **Workflow:** a dashboard of patients with a detected intention and no matching order, reviewed by the
+      clinical team. **Outcome:** the pilot was designed around whether flagged patients were actioned.
+    details:
+      Strongest parts: "Clear question, local model, local validation, concrete workflow"
+      Weak point to watch: "Dashboards depend on someone owning the daily review; the outcome measure needs a baseline rate of lost-to-follow-up to compare against"
+
+  - type: case_study
+    title: "Blood sugar decision support in mental health inpatients"
+    text: |
+      **Question:** improve guideline-concordant monitoring and management of deranged blood sugar in inpatients with
+      severe mental illness. **Population:** inpatients on the trust's mental health wards. **Data flow:** laboratory
+      results and clinical notes in near real time. **Model:** rule- and text-based identification of patients meeting
+      criteria. **Validation:** against guideline criteria and clinical review. **Workflow:** a real-time prompt to the
+      treating team with the trust-approved recommendation. **Outcome:** the pilot protocol evaluates acceptability,
+      feasibility and implementation, with clinical outcomes to follow.
+    details:
+      Strongest parts: "Tightly defined question and population; the recommendation is already trust policy, so the tool enforces nothing new"
+      Weak point to watch: "Alert fatigue; the evaluation rightly treats clinician acceptance as the first hurdle"
+
+  - type: case_study
+    title: "Audit and feedback for psychosis care"
+    text: |
+      **Question:** help teams see unmet physical health needs and variation in care across their psychosis caseload.
+      **Population:** patients under community and inpatient psychosis services in a mental health trust.
+      **Data flow:** the full record, refreshed regularly. **Model:** concept extraction from notes combined with
+      structured data to build a population view. **Validation:** co-designed and feasibility-tested with clinical
+      teams across three use cases. **Workflow:** an audit-and-feedback dashboard used in team meetings.
+      **Outcome:** identification of unmet needs and variation that teams then act on; feasibility was the first
+      endpoint.
+    details:
+      Strongest parts: "Participatory design with the teams who will use it; multiple use cases on one platform"
+      Weak point to watch: "Population-level dashboards need a clear owner and a cadence of review; the link from seeing variation to changing care has to be managed"
+
+  - type: heading
+    text: "What the three have in common"
+
+  - type: paragraph
+    text: |
+      Each was built for a named clinical team with a named problem. Each used the hospital's own text and validated
+      locally. Each put its output into a place where someone's working day already happened. And each chose a first
+      endpoint about people, not about the model: were the alerts actioned, did clinicians accept the prompts, could
+      the teams use the dashboard. That is the pattern to copy.
+
+  - type: callout
+    kind: limits
+    text: |
+      The template does not guarantee success. Tools fail when the question drifts, when the data flow is slower than
+      the workflow needs, when validation is skipped because 'the model is published', or when the route into the
+      workflow is an email no one reads. Most failures are organisational rather than technical.
+
+quiz:
+  questions:
+    - question: "Which of these is a clinical question in the sense the section requires?"
+      type: single
+      options:
+        - text: "Reduce the number of neurology outpatients who are lost to follow-up after an intended scan is not ordered."
+          correct: true
+        - text: "Deploy natural language processing in neurology."
+        - text: "Buy a text analytics platform."
+        - text: "Improve data quality."
+      explanation: "A good question names the population, the problem and lets a non-technical person judge whether it was answered."
+
+    - question: "What is the difference between an outcome measure and a model metric?"
+      type: single
+      options:
+        - text: "A model metric says how well the model reads text; an outcome measure says whether patients or staff are better off."
+          correct: true
+        - text: "An outcome measure is calculated by the computer; a model metric is judged by clinicians."
+        - text: "They are two names for the same thing."
+        - text: "A model metric is used in research and an outcome measure in audit."
+      explanation: "F1 is a model metric. Fewer missed follow-ups is an outcome. A tool can score well on one and nothing on the other."
+
+    - question: "Which of the following are among the seven parts of a point solution? Select all that apply."
+      type: multiple
+      options:
+        - text: "A defined population"
+          correct: true
+        - text: "A route into the workflow"
+          correct: true
+        - text: "A local validation against a clinician-annotated gold standard"
+          correct: true
+        - text: "A press release"
+      explanation: "The seven parts are question, population, data flow, model, local validation, workflow route and outcome measure."
+
+    - question: "Why does the data flow need to be specified early?"
+      type: single
+      options:
+        - text: "Because a tool that needs notes within an hour of writing is a different engineering task from one that runs monthly."
+          correct: true
+        - text: "Because the data flow determines the colour of the dashboard."
+        - text: "Because data flows must be approved by the finance department."
+        - text: "It does not; data flow can be decided after deployment."
+      explanation: "Latency requirements drive the engineering effort and cost."
+
+    - question: "In the lost-to-follow-up deployment, what was identified as the weak point to watch?"
+      type: single
+      options:
+        - text: "Someone must own the daily dashboard review, and the outcome needs a baseline rate to compare against."
+          correct: true
+        - text: "The model had very low accuracy."
+        - text: "The hospital had no outpatient notes."
+        - text: "The question was unclear."
+      explanation: "The model and validation were strong. The organisational ownership of the workflow and the measurement baseline were the risks."
+
+    - question: "What did all three dissected deployments have in common in their choice of first endpoint?"
+      type: single
+      options:
+        - text: "Each chose a first endpoint about people (alerts actioned, clinician acceptance, team usability) rather than about the model."
+          correct: true
+        - text: "Each measured only the F1 score."
+        - text: "Each measured cost savings to the hospital."
+        - text: "None of them measured anything."
+      explanation: "The pattern to copy: validate the model, then measure whether humans use and act on the tool."
+
+    - question: "According to the section, why do most point solutions fail?"
+      type: single
+      options:
+        - text: "For organisational reasons: drifting questions, slow data flows, skipped validation, or outputs sent where no one looks."
+          correct: true
+        - text: "Because the software crashes."
+        - text: "Because SNOMED CT is too large."
+        - text: "Because clinicians refuse to use computers."
+      explanation: "Most failures are organisational rather than technical."

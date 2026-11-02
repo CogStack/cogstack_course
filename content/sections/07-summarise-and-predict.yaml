@@ -1,0 +1,197 @@
+id: 07-summarise-and-predict
+part: b
+title: "Summarise and predict: generative models and forecasting"
+core_question: "What is real and what is still research?"
+duration_minutes: 25
+
+objectives:
+  - Distinguish extraction (finding what is written) from generation (producing new text or predictions).
+  - Describe what a patient-trajectory forecasting model does and how it was evaluated.
+  - Explain why a generative model can be fluent and wrong at the same time.
+  - Explain why these capabilities are currently research or early evaluation rather than routine service.
+
+content:
+  - type: paragraph
+    text: |
+      This is the capability that attracts the headlines, and the one where the gap between what is demonstrated and
+      what is deployed is widest. The purpose of this section is to let you be genuinely enthusiastic about this strand
+      and still able to say, with reasons, why your hospital should not deploy it this year.
+
+  - type: heading
+    text: "Extraction versus generation"
+
+  - type: paragraph
+    text: |
+      Everything in Sections 4 to 6 was **extraction**: finding and structuring what a clinician had already written.
+      Extraction can be wrong, but its errors are bounded: it can only report concepts that appear in the text, and
+      each one can be traced back to the sentence it came from.
+
+      **Generation** is different. A generative model produces new text, or new predictions, that were not in the
+      source. A discharge summary drafted from the notes, an answer to a question about a patient, a forecast of what
+      the patient will be diagnosed with next year: all of these are outputs the model has composed. They can be
+      extraordinarily useful. They can also be plausible, fluent and false, with nothing in the source to trace them
+      back to.
+
+  - type: heading
+    text: "What a transformer is, in two paragraphs"
+
+  - type: paragraph
+    text: |
+      The models behind this capability are **transformers**, the same family as the large language models now in
+      public use. A transformer is trained on a very large body of text (or of coded clinical events) to predict what
+      comes next. Given the start of a sentence, it predicts the next word; given a patient's history as a sequence of
+      coded events, it predicts the next event. It learns statistical patterns of what tends to follow what.
+
+      This is why such models are both powerful and dangerous. They have absorbed an enormous amount of pattern, and
+      so can produce fluent, well-formed clinical prose and forecasts that are often right. But they have no model of
+      truth. When the pattern suggests a plausible continuation that happens to be false, they produce it with the same
+      confidence. This is called **hallucination**, and it is a property of the method, not a bug awaiting a fix.
+
+  - type: heading
+    text: "Three strands of NHS work"
+
+  - type: case_study
+    title: "Forecasting a patient's future from their record"
+    text: |
+      Researchers at a London hospital group trained a generative transformer not on words but on the sequence of
+      coded clinical concepts extracted from each patient's record using the methods in Section 3. Given a patient's
+      history, the model forecasts the probability of future diagnoses, procedures, medications and findings. It was
+      evaluated on data from two UK hospitals and a US intensive care dataset, and in a clinician study where
+      specialists judged whether the forecasts were plausible. The results were strong enough to publish in a leading
+      digital health journal, and the authors were clear that the work is a research demonstration, not a deployed tool.
+    details:
+      Capability: "Predict (generative forecasting over coded patient trajectories)"
+      Status: "Research, published and externally evaluated; not in clinical use"
+      Depends on: "Extraction (Section 3) having already turned the text into coded events"
+
+  - type: case_study
+    title: "Drafting the hospital course for a discharge summary"
+    text: |
+      Writing the narrative of a hospital stay for the discharge letter is time-consuming and often delayed.
+      Researchers tested whether a model could draft the 'hospital course' section from the notes written during the
+      admission. The work is promising as a time-saver and illustrates the central evaluation problem: how do you
+      measure whether a generated summary is good? Word-overlap scores do not capture clinical correctness, and
+      clinician review is slow and subjective. Any deployment would require the clinician to read and sign every draft.
+    details:
+      Capability: "Summarise (generating narrative text from notes)"
+      Status: "Research; evaluation methods still immature"
+      Safe pattern: "Draft for a clinician to edit and sign, never an unreviewed output"
+
+  - type: case_study
+    title: "Grounding a language model in the patient's own record"
+    text: |
+      Current work connects large language models to the indexed hospital record so that an answer to a question about
+      a patient is built from retrieved passages of that patient's notes, with each statement linked to its source.
+      This is called **grounding** or retrieval-augmented generation. In a 2025 international shared task on answering
+      patient questions from their records, an NHS-based team placed well. Grounding reduces hallucination and makes
+      answers checkable, but does not eliminate error, and the models used must be run inside the hospital's secure
+      environment for governance reasons.
+    details:
+      Capability: "Summarise (question answering grounded in the record)"
+      Status: "Active research and early evaluation"
+      Key safeguard: "Every statement traceable to a passage in the record"
+
+  - type: heading
+    text: "Why this is still research"
+
+  - type: list
+    items:
+      - term: "Hallucination."
+        text: "Fluent, confident, false output is intrinsic to the method and can only be managed, not removed."
+      - term: "Evaluation."
+        text: "There is no agreed way to measure whether a generated summary or forecast is clinically good enough. Without that, there is no validation in the sense Section 10 requires."
+      - term: "Explainability."
+        text: "A forecast of future diagnosis cannot usually be explained to the patient or the clinician in terms they can act on."
+      - term: "Regulation."
+        text: "A tool that drafts clinical text or predicts individual outcomes is likely to be a medical device. The regulatory pathway for generative models is still being defined."
+      - term: "Governance."
+        text: "Sending patient text to an external model provider is almost never acceptable; the model has to run inside the hospital, which has cost and skill implications."
+
+  - type: callout
+    kind: limits
+    text: |
+      Every example in this section is research or early evaluation. None is in routine service in the NHS as a tool
+      that acts without a clinician reviewing the output. The safe deployment pattern, where one exists at all, is a
+      draft or a suggestion that a named clinician reads, edits and takes responsibility for.
+
+  - type: callout
+    kind: key-message
+    text: |
+      Generative models can forecast a patient's trajectory from their coded history, draft summaries and answer
+      questions grounded in the record, and the NHS research is world-class. But fluency is not accuracy, evaluation
+      methods are immature, and the regulatory path is unsettled. A leader can be excited by this strand and still,
+      correctly, decline to deploy it this year.
+
+quiz:
+  questions:
+    - question: "What is the essential difference between extraction and generation?"
+      type: single
+      options:
+        - text: "Extraction finds and structures what was written and each result can be traced to its sentence; generation composes new text or predictions that were not in the source."
+          correct: true
+        - text: "Extraction is done by people; generation is done by computers."
+        - text: "Extraction uses SNOMED CT; generation uses ICD-10."
+        - text: "There is no meaningful difference."
+      explanation: "Extraction's errors are bounded by the text. Generation's are not."
+
+    - question: "What does the patient-trajectory forecasting model take as its input?"
+      type: single
+      options:
+        - text: "The sequence of coded clinical concepts extracted from the patient's record over time."
+          correct: true
+        - text: "The patient's genome."
+        - text: "Social media posts by the patient."
+        - text: "A questionnaire completed by the clinician."
+      explanation: "It builds on extraction: the text is first turned into coded events, and the model learns patterns in those sequences."
+
+    - question: "Why can a generative model be fluent and wrong at the same time?"
+      type: single
+      options:
+        - text: "It learns statistical patterns of what tends to follow what and has no model of truth, so a plausible but false continuation is produced with the same confidence."
+          correct: true
+        - text: "Because it was trained on documents containing spelling mistakes."
+        - text: "Because the servers are too slow."
+        - text: "It cannot; a fluent output is always correct."
+      explanation: "Hallucination is a property of the method, not a bug awaiting a fix."
+
+    - question: "What is 'grounding' a language model in the patient's record, and what does it achieve?"
+      type: single
+      options:
+        - text: "Building answers from retrieved passages of the patient's own notes with each statement linked to its source; it reduces hallucination and makes answers checkable, but does not eliminate error."
+          correct: true
+        - text: "Running the model on a server in the hospital basement."
+        - text: "Training the model only on the patient's record."
+        - text: "Guaranteeing that the model never makes a mistake."
+      explanation: "Grounding improves traceability and reduces error. It is a safeguard, not a guarantee."
+
+    - question: "What is the only broadly accepted deployment pattern for generative clinical text today?"
+      type: single
+      options:
+        - text: "A draft or suggestion that a named clinician reads, edits and takes responsibility for."
+          correct: true
+        - text: "Automatic sending of generated discharge letters to GPs."
+        - text: "Patient-facing chatbots that answer clinical questions unsupervised."
+        - text: "Automatic changes to the problem list without review."
+      explanation: "Human review and sign-off is the safeguard in every current example."
+
+    - question: "Which of the following are reasons the section gives for treating generative capabilities as research rather than service? Select all that apply."
+      type: multiple
+      options:
+        - text: "No agreed way to measure whether a generated summary or forecast is clinically good enough"
+          correct: true
+        - text: "Regulatory pathway for generative medical software still being defined"
+          correct: true
+        - text: "Patient text generally cannot be sent to an external model provider"
+          correct: true
+        - text: "Generative models are too slow to be useful"
+      explanation: "Evaluation, regulation and governance are the barriers named. Speed is not."
+
+    - question: "A vendor offers a tool that will 'automatically predict each patient's next diagnosis and update the record'. Based on this section, what is the right response?"
+      type: single
+      options:
+        - text: "Ask for the evaluation evidence, the regulatory status, where the model runs and how a clinician reviews each output; expect the answers to show it is not ready for unreviewed use."
+          correct: true
+        - text: "Deploy it, because similar research has been published in a leading journal."
+        - text: "Reject all use of language models in the hospital."
+        - text: "Accept it if the price is low enough."
+      explanation: "The research is real. Unreviewed automatic updating of the record is not supported by the evidence or the regulatory position."

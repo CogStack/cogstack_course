@@ -1,0 +1,162 @@
+id: 02-what-the-platform-is
+part: a
+title: "What a clinical text analytics platform is, and what it is not"
+core_question: "What am I actually being offered?"
+duration_minutes: 25
+
+objectives:
+  - Name the main components of a hospital text analytics platform and say what each one does.
+  - Explain where the platform sits in relation to the electronic patient record.
+  - Correct four common misconceptions about what such a platform is.
+  - Explain what 'open source' does and does not mean for cost.
+
+content:
+  - type: paragraph
+    text: |
+      Over the past decade, several NHS trusts have deployed open-source platforms that read the free text in their
+      records at hospital scale. The first was built in a large London teaching hospital and its neighbouring mental
+      health trust; others followed, including a major London academic hospital group and trusts elsewhere in the UK.
+      The platforms differ in detail but share the same shape. This section describes that shape so that when a
+      proposal, a partner or a vendor talks about 'clinical NLP', you know what the parts are and what questions to
+      ask.
+
+  - type: heading
+    text: "The four layers"
+
+  - type: list
+    style: number
+    items:
+      - term: "Ingestion."
+        text: "Connectors copy documents from the systems where they already live: the electronic patient record, document management systems, legacy databases, scanned letters and PDFs. Nothing is changed in the source systems. The platform is read-only with respect to the record."
+      - term: "Indexing and search."
+        text: "Every document is stored in a search index, so that the whole hospital's text can be searched in seconds, the way a web search engine searches pages. This alone is useful: 'show me every letter that mentions this drug' becomes a one-line query."
+      - term: "Natural language processing."
+        text: "A language model reads each document and tags the clinical concepts in it (conditions, drugs, procedures, symptoms, findings), links each one to a standard clinical vocabulary, and records whether it is present or negated, current or historical, about the patient or a relative. This turns prose into countable data. Section 3 explains how."
+      - term: "Applications."
+        text: "On top sit the tools people actually use: dashboards, cohort builders, alerting workflows, research data extracts, and a secure environment where analysts work with the data without it leaving the hospital."
+
+  - type: paragraph
+    text: |
+      The standard vocabulary matters more than it sounds. In the NHS the standard is **SNOMED CT**, a structured
+      dictionary of several hundred thousand clinical concepts, each with a unique code and relationships to other
+      concepts. When the text 'MI' and the text 'heart attack' and the text 'myocardial infarction' are all linked
+      to the same SNOMED concept, they can be counted together, and 'heart attack' can be recognised as a kind of
+      'ischaemic heart disease' automatically.
+
+  - type: callout
+    kind: evidence
+    title: "At what scale does this run?"
+    text: |
+      The first NHS deployment reported processing over 300 million lines of clinical data within its first years. A
+      later hospital-wide run at the same site produced 157 million coded clinical concepts from 9.5 million documents
+      covering just over one million patients and nine years of care. Another London hospital group has described its
+      deployment, including the data-flow engine used to connect many legacy and current systems and the secure
+      environment provided to analysts. These are not pilots; they are infrastructure that has run for years.
+
+  - type: heading
+    text: "Where it sits"
+
+  - type: paragraph
+    text: |
+      The platform sits **beside** the electronic patient record, not inside it and not instead of it. It reads from
+      the record and from other systems; it does not write to them unless a specific application is built to do so,
+      and that application would be governed separately. Clinicians continue to document exactly as they do now. The
+      platform's job is to make what they have already written usable.
+
+  - type: heading
+    text: "What it is not"
+
+  - type: list
+    items:
+      - term: "It is not an electronic patient record."
+        text: "It does not replace the system clinicians use to document care, prescribe or order. It depends on that system existing."
+      - term: "It is not a chatbot."
+        text: "The core technology extracts and structures information. It can feed a large language model, and some research now does, but the platform itself does not converse and does not generate text unless a generative component is deliberately added (see Section 7)."
+      - term: "It is not, in itself, a medical device."
+        text: "Infrastructure that indexes and codes text for search, audit and research is not regulated as a device. A specific tool built on it that influences individual clinical decisions may be. Section 10 draws this line."
+      - term: "It is not a finished product."
+        text: "It is open-source infrastructure that a hospital team installs, connects, configures, validates and maintains. Commercial support exists, but the responsibility for how it is used stays with the hospital."
+
+  - type: heading
+    text: "What 'open source' means for cost"
+
+  - type: paragraph
+    text: |
+      Open source means the software can be downloaded, inspected, modified and run without a licence fee. It does
+      not mean the capability is free. Running a platform of this kind requires servers inside the hospital network,
+      engineers to connect it to the record and keep it running, clinicians to check and correct what the language
+      model produces, and governance effort to approve each use. Section 11 sets out the team and the budget
+      realistically. The honest summary is that open source removes the licence cost and the lock-in, and leaves
+      every other cost in place.
+
+  - type: callout
+    kind: key-message
+    text: |
+      A clinical text analytics platform is read-only infrastructure that sits beside your record, indexes every
+      document, turns prose into coded clinical concepts, and makes the result available for search, dashboards,
+      alerts and research. It is not a record, not a chatbot, not a device and not a product that works out of the
+      box.
+
+quiz:
+  questions:
+    - question: "Which list correctly names the four layers of a hospital text analytics platform described in this section?"
+      type: single
+      options:
+        - text: "Ingestion, indexing and search, natural language processing, applications"
+          correct: true
+        - text: "Prescribing, ordering, documentation, billing"
+        - text: "Collection, cleaning, modelling, publication"
+        - text: "Hardware, operating system, database, user interface"
+      explanation: "The platform copies documents in, indexes them, tags clinical concepts, and exposes tools on top."
+
+    - question: "What is the relationship between the platform and the hospital's electronic patient record?"
+      type: single
+      options:
+        - text: "The platform sits beside the record, reads from it, and does not change how clinicians document."
+          correct: true
+        - text: "The platform replaces the record."
+        - text: "The platform is a module sold by the record vendor."
+        - text: "The platform requires clinicians to document in a new structured template."
+      explanation: "It is read-only with respect to the record and depends on the record continuing to exist."
+
+    - question: "Why does linking extracted terms to a standard vocabulary such as SNOMED CT matter?"
+      type: single
+      options:
+        - text: "Because different wordings of the same concept can then be counted together and related concepts can be grouped automatically."
+          correct: true
+        - text: "Because SNOMED CT is required for the software to compile."
+        - text: "Because it allows the platform to write back into the record."
+        - text: "Because it removes the need for clinicians to be involved."
+      explanation: "'MI', 'heart attack' and 'myocardial infarction' become one countable concept, and that concept is known to be a kind of ischaemic heart disease."
+
+    - question: "Which of the following are things the platform, in itself, is NOT? Select all that apply."
+      type: multiple
+      options:
+        - text: "An electronic patient record"
+          correct: true
+        - text: "A chatbot"
+          correct: true
+        - text: "A finished, out-of-the-box product"
+          correct: true
+        - text: "A search index over hospital documents"
+      explanation: "A search index over documents is exactly what it is. The other three are common misconceptions."
+
+    - question: "A colleague says: 'The software is open source, so this project will cost us nothing.' What is the accurate correction?"
+      type: single
+      options:
+        - text: "Open source removes the licence fee and lock-in, but servers, engineers, clinician time for validation and governance effort all still have to be paid for."
+          correct: true
+        - text: "Open source software is illegal to use in the NHS, so the project cannot go ahead."
+        - text: "The colleague is right; open source projects have no running costs."
+        - text: "Open source software always costs more than commercial software."
+      explanation: "The licence is free. The capability is not."
+
+    - question: "Roughly how large was the hospital-wide run described in the evidence box?"
+      type: single
+      options:
+        - text: "Around 9.5 million documents for just over a million patients over nine years."
+          correct: true
+        - text: "A few thousand documents from one ward over six months."
+        - text: "Around 100 documents used to test the software."
+        - text: "Every document in the NHS."
+      explanation: "The point is that these platforms run at whole-hospital scale over many years, not as small pilots."
