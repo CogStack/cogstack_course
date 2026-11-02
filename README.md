@@ -89,6 +89,13 @@ Parts unlock in order. Within a part, `unlock: sequential` requires each section
 opens; `unlock: any` lets learners take the sections in any order. The pass mark is set in `course.yaml` under
 `cpd.pass_mark`.
 
+## Reviewer access
+
+To open every section without completing the course, visit `#/unlock` (for example
+`https://<user>.github.io/<repository>/#/unlock`). This toggles a preview mode, shown by a banner at the top of the
+page, and the same address turns it off again. Preview mode never marks a section complete and the certificate still
+requires every quiz to be passed. The switch is not linked from the interface.
+
 ## Licence
 
 Course text: © the authors. Player code: MIT. js-yaml: MIT.

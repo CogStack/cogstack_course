@@ -58,6 +58,9 @@ code { background: #eef1f4; padding: 0.1em 0.35em; border-radius: 4px; font-size
 .site-footer { border-top: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; padding: 1.25rem 0; background: var(--surface); }
 .site-footer p { margin: 0; }
 
+.preview-banner { background: var(--warn-soft); color: var(--warn); border-bottom: 1px solid #eacb8a; font-size: 0.9rem; padding: 0.45rem 0; }
+.preview-banner .link-button { color: var(--warn); text-decoration: underline; margin-left: 0.75rem; }
+
 /* ---------- Generic components ---------- */
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1.25rem; }
 .btn { display: inline-block; border: 1px solid var(--primary); background: var(--primary); color: #fff; padding: 0.6rem 1.2rem; border-radius: 8px; font: inherit; font-weight: 600; cursor: pointer; text-decoration: none; }

@@ -5,6 +5,7 @@
   'use strict';
 
   var STORAGE_KEY = 'ctai-course-progress-v1';
+  var PREVIEW_KEY = 'ctai-course-preview';   // reviewer switch: toggled by visiting #/unlock
   var CONTENT_ROOT = 'content/';
 
   var state = {
@@ -12,6 +13,7 @@
     sections: {},         // id -> parsed section yaml
     order: [],            // section ids in course order
     progress: loadProgress(),
+    preview: localStorage.getItem('ctai-course-preview') === '1',  // opens every section; never marks anything complete
     quiz: null            // live quiz attempt state
   };
 
@@ -92,6 +94,7 @@
   // Unlock rules: a part opens when all previous parts are complete.
   // Inside a part, `unlock: sequential` requires the previous section; `unlock: any` does not.
   function isUnlocked(id) {
+    if (state.preview) return true;
     var sec = state.sections[id];
     var parts = state.course.parts || [];
     var pIndex = parts.findIndex(function (p) { return p.id === sec.part; });
@@ -463,6 +466,21 @@
     });
   }
 
+  function togglePreview() {
+    state.preview = !state.preview;
+    try {
+      if (state.preview) localStorage.setItem(PREVIEW_KEY, '1'); else localStorage.removeItem(PREVIEW_KEY);
+    } catch (e) { /* ignore */ }
+    updatePreviewBanner();
+    location.hash = '#/';
+    render();
+  }
+  function updatePreviewBanner() {
+    var el = document.getElementById('preview-banner');
+    if (!el) return;
+    el.hidden = !state.preview;
+  }
+
   function renderNotFound() {
     app.innerHTML = '<div class="card"><h1>Page not found</h1><a class="btn" href="#/">Back to course home</a></div>';
   }
@@ -478,11 +496,15 @@
       return renderSection(decodeURIComponent(parts[1]));
     }
     if (parts[0] === 'certificate') return renderCertificate();
+    if (parts[0] === 'unlock') return togglePreview();
     renderNotFound();
   }
 
   window.addEventListener('hashchange', render);
   document.getElementById('reset-progress').addEventListener('click', resetProgress);
+  var previewOff = document.getElementById('preview-off');
+  if (previewOff) previewOff.addEventListener('click', togglePreview);
+  updatePreviewBanner();
 
   loadCourse().then(function () {
     document.title = state.course.title;
